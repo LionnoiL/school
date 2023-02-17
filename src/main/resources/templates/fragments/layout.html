@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <base href="/">
+  <meta charset="utf-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+
+  <link rel="stylesheet" href="css/school.css">
+  <link rel="stylesheet" href="css/adminlte.min.css">
+
+  <link rel="shortcut icon" type="image/ico" th:href="@{/img/favicons/favicon.ico}"/>
+
+  <th:block layout:fragment="css"/>
+
+  <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">School app</title>
+</head>
+<body>
+<div id="app" class="d-flex flex-column min-vh-100 site-wrap">
+  <th:block th:replace="fragments/header :: header"/>
+
+  <th:block th:replace="fragments/sidebar :: sidebar"/>
+
+  <div class="wrapper">
+
+  <th:block layout:fragment="content"/>
+
+  </div>
+  <!-- ./wrapper -->
+
+  <th:block th:replace="fragments/footer :: footer"/>
+  <th:block layout:fragment="script"/>
+
+</div>
+</body>
+</html>

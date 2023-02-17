@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <title>Редагування академічного року</title>
+</head>
+
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+  <div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Видалення академічного року</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p th:text="'Видалити академічний рік '+${year.name}+' по школі '+${year.school.name}+'?'"></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Відмова</button>
+          <form action="/academic-year/delete" method="post">
+            <input type="hidden" name="id" th:value="${year.id}">
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Видалити</button>
+          </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="content-wrapper">
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1>Редагування академічного року</h1>
+          </div>
+
+          <div class="col-sm-6">
+            <ol class="float-right">
+                <button type="button" class="btn btn-block btn-outline-danger" data-toggle="modal" data-target="#modal-delete">Видалити</button>
+            </ol>
+          </div>
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+        <div class="col-md-12">
+          <div class="card card-default">
+
+            <form action="/academic-year/edit" method="post">
+
+            <div class="card-body p-0 m-3">
+              <div class="bs-stepper-content">
+
+
+              <div class="form-group">
+                <label for="name">Назва</label>
+                <input type="text" class="form-control form-control-lg" id="name" name="name" th:value="${year.name}">
+              </div>
+
+                <div class="row">
+              <div class="col-6">
+                <div class="form-group">
+                  <label for="startDate">Початок року</label>
+
+                  <div class="input-group date" id="startDate" data-target-input="nearest">
+                    <input type="text" name="startDate" class="form-control datetimepicker-input" data-target="#startDate" th:value="${year.startDate}">
+                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+                <div class="col-6">
+
+                <div class="form-group">
+                  <label for="startDate">Кінець року</label>
+
+                  <div class="input-group date" id="endDate" data-target-input="nearest">
+                    <input type="text" name="endDate" class="form-control datetimepicker-input" data-target="#endDate" th:value="${year.endDate}">
+                    <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
+                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                  </div>
+
+                </div>
+                </div>
+
+              </div>
+
+                <div class="form-group">
+                  <label>Школа</label>
+                  <select name="school_id" class="form-control select2" style="width: 100%;">
+                    <option th:each="school : ${schools}" th:value="${school.id}" th:text="${school.name}" th:selected="${school.id==year.school.id}"></option>
+                    </option>
+                  </select>
+                </div>
+
+              <input type="hidden" name="id" th:value="${year.id}">
+
+              </div>
+
+            </div>
+
+            <div class="card-footer">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <a href="/academic-year" class="btn btn-default mr-1">Відмова</a>
+                <button type="submit" class="btn btn-success">Зберегти</button>
+              </div>
+            </div>
+
+
+
+            </form>
+
+          </div>
+        </div>
+
+  </div>
+
+
+</div>
+
+<div layout:fragment="css" th:remove="tag">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
+  <!-- Select2 -->
+  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+</div>
+
+<div layout:fragment="script" th:remove="tag">
+  <!-- daterangepicker -->
+  <script src="plugins/moment/moment.min.js"></script>
+  <script src="plugins/daterangepicker/daterangepicker.js"></script>
+
+  <!-- Tempusdominus Bootstrap 4 -->
+  <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+
+  <!-- Select2 -->
+  <script src="plugins/select2/js/select2.full.min.js"></script>
+
+  <script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="plugins/jquery-validation/additional-methods.min.js"></script>
+
+  <script>
+                $(function () {
+
+                //Initialize Select2 Elements
+                  $('.select2').select2();
+
+                  //Initialize Select2 Elements
+                  $('.select2bs4').select2({
+                    theme: 'bootstrap4'
+                  });
+
+
+                  //Date picker
+                  $('#startDate').datetimepicker({
+                      locale: 'uk',
+                      format: 'DD.MM.YYYY'
+                  });
+
+                  $('#endDate').datetimepicker({
+                      locale: 'uk',
+                      format: 'DD.MM.YYYY'
+                  });
+            })
+  </script>
+</div>
+
+
+</body>
+</html>

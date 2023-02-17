@@ -1,0 +1,9 @@
+.select2-selection__rendered {
+    line-height: calc(2.875rem + 2px) !important;
+}
+.select2-container .select2-selection--single {
+    height: calc(2.875rem + 4px) !important;
+}
+.select2-selection__arrow {
+    height: calc(2.875rem + 3px) !important;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="footer">
+
+  <footer class="main-footer">
+    <strong>Copyright &copy; 2023</strong>
+    All rights reserved.
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
+    </div>
+  </footer>
+
+  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
+  <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+  <script>
+  $.widget.bridge('uibutton', $.ui.button)
+
+  </script>
+  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/adminlte.js"></script>
+</th:block>
+
+
+</body>
+</html>
