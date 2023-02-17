@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-  <title>Редагування академічного року</title>
+  <title>Редагування семестру</title>
 </head>
 
 <body>
@@ -13,18 +13,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Видалення академічного року</h4>
+          <h4 class="modal-title">Видалення семестру</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p th:text="'Видалити академічний рік '+${year.name}+' по школі '+${year.school.name}+'?'"></p>
+          <p th:text="'Видалити семестр '+${term.name}+' в році '+${term.academicYear.name}+' по школі '+${term.academicYear.school.name}+'?'"></p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Відмова</button>
-          <form action="/academic-year/delete" method="post">
-            <input type="hidden" name="id" th:value="${year.id}">
+          <form action="/academic-term/delete" method="post">
+            <input type="hidden" name="id" th:value="${term.id}">
             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Видалити</button>
           </form>
         </div>
@@ -40,7 +40,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-            <h1>Редагування академічного року</h1>
+            <h1>Редагування семестру</h1>
           </div>
 
           <div class="col-sm-6">
@@ -56,7 +56,7 @@
         <div class="col-md-12">
           <div class="card card-default">
 
-            <form action="/academic-year/edit" method="post">
+            <form action="/academic-term/edit" method="post">
 
             <div class="card-body p-0 m-3">
               <div class="bs-stepper-content">
@@ -64,16 +64,16 @@
 
               <div class="form-group">
                 <label for="name">Назва</label>
-                <input type="text" class="form-control form-control-lg" id="name" name="name" th:value="${year.name}">
+                <input type="text" class="form-control form-control-lg" id="name" name="name" th:value="${term.name}">
               </div>
 
                 <div class="row">
               <div class="col-6">
                 <div class="form-group">
-                  <label for="startDate">Початок року</label>
+                  <label for="startDate">Початок семестру</label>
 
                   <div class="input-group date" id="startDate" data-target-input="nearest">
-                    <input type="text" name="startDate" class="form-control datetimepicker-input" data-target="#startDate" th:value="${year.startDate}">
+                    <input type="text" name="startDate" class="form-control datetimepicker-input" data-target="#startDate" th:value="${term.startDate}">
                     <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -84,10 +84,10 @@
                 <div class="col-6">
 
                 <div class="form-group">
-                  <label for="startDate">Кінець року</label>
+                  <label for="startDate">Кінець семестру</label>
 
                   <div class="input-group date" id="endDate" data-target-input="nearest">
-                    <input type="text" name="endDate" class="form-control datetimepicker-input" data-target="#endDate" th:value="${year.endDate}">
+                    <input type="text" name="endDate" class="form-control datetimepicker-input" data-target="#endDate" th:value="${term.endDate}">
                     <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -99,14 +99,17 @@
               </div>
 
                 <div class="form-group">
-                  <label>Школа</label>
-                  <select name="school_id" class="form-control select2" style="width: 100%;">
-                    <option th:each="school : ${schools}" th:value="${school.id}" th:text="${school.name}" th:selected="${school.id==year.school.id}"></option>
+                  <label>Академічний рік</label>
+
+                  <select name="academic_year_id" class="form-control select2" style="width: 100%;">
+                    <option th:each="year : ${years}" th:value="${year.id}" th:text="${year.name}" th:selected="${term.academicYear.id==year.id}"></option>
                     </option>
                   </select>
+
+
                 </div>
 
-              <input type="hidden" name="id" th:value="${year.id}">
+              <input type="hidden" name="id" th:value="${term.id}">
 
               </div>
 
@@ -114,7 +117,7 @@
 
             <div class="card-footer">
               <div class="btn-group" role="group" aria-label="Basic example">
-                <a href="/academic-year" class="btn btn-default mr-1">Відмова</a>
+                <a href="/academic-term" class="btn btn-default mr-1">Відмова</a>
                 <button type="submit" class="btn btn-success">Зберегти</button>
               </div>
             </div>
@@ -180,6 +183,7 @@
                       locale: 'uk',
                       format: 'DD.MM.YYYY'
                   });
+
 
                   $.validator.addMethod(
                       "ukrDate",

@@ -2,7 +2,9 @@ package ua.gaponov.school.school;
 
 import static ua.gaponov.school.utils.UrlUtils.SCHOOL_URL;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +27,10 @@ public class SchoolController {
   @GetMapping
   public ModelAndView list() {
     ModelAndView result = new ModelAndView("school/index");
-    List<SchoolDto> list = service.getAll();
+    List<SchoolDto> list = service.getAll().stream()
+        .map(School::toDto)
+        .sorted(Comparator.comparing(SchoolDto::getName))
+        .collect(Collectors.toList());
     result.addObject("schools", list);
     return result;
   }
@@ -34,13 +39,13 @@ public class SchoolController {
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "address") String address,
       @RequestParam(value = "description") String description) {
-    SchoolDto schoolDto = null;
-    schoolDto = SchoolDto.builder()
+    School school = null;
+    school = School.builder()
         .address(address)
         .name(name)
         .description(description)
         .build();
-    service.save(schoolDto);
+    service.save(school);
 
     return new RedirectView(SCHOOL_URL);
   }
@@ -51,7 +56,7 @@ public class SchoolController {
     SchoolDto schoolDto = null;
 
     try {
-      schoolDto = service.findById(id);
+      schoolDto = School.toDto(service.findById(id));
 
       result.setViewName("school/edit");
       result.addObject("school", schoolDto);
@@ -67,14 +72,14 @@ public class SchoolController {
       @RequestParam(value = "name") String name,
       @RequestParam(value = "address") String address,
       @RequestParam(value = "description") String description) {
-    SchoolDto schoolDto = null;
+    School school = null;
 
     try {
-      schoolDto = service.findById(id);
-      schoolDto.setAddress(address);
-      schoolDto.setDescription(description);
-      schoolDto.setName(name);
-      service.save(schoolDto);
+      school = service.findById(id);
+      school.setAddress(address);
+      school.setDescription(description);
+      school.setName(name);
+      service.save(school);
     } catch (NotFoundException e) {
       throw new SchoolNotFoundException("School not found with id: " + id);
     }
@@ -84,10 +89,10 @@ public class SchoolController {
 
   @PostMapping("/delete")
   public RedirectView delete(@RequestParam(value = "id") int id) {
-    SchoolDto schoolDto = null;
+    School school = null;
     try {
-      schoolDto = service.findById(id);
-      service.delete(schoolDto);
+      school = service.findById(id);
+      service.delete(school);
     } catch (NotFoundException e) {
       throw new SchoolNotFoundException("School not found with id: " + id);
     }

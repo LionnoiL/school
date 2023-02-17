@@ -1,9 +1,7 @@
 package ua.gaponov.school.academicterm;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,31 +12,24 @@ public class AcademicTermService {
 
   private final AcademicTermRepo academicTermRepo;
 
-  public List<AcademicTermDto> getAll() {
-    List<AcademicTerm> terms = academicTermRepo.findAll();
-    return terms.stream()
-        .map(AcademicTerm::toDto)
-        .sorted(Comparator.comparing(termDto -> (Integer) termDto.getId()))
-        .collect(Collectors.toList());
+  public List<AcademicTerm> getAll() {
+    return academicTermRepo.findAll();
   }
 
-  public AcademicTermDto findById(int id) throws NotFoundException {
+  public AcademicTerm findById(int id) throws NotFoundException {
     Optional<AcademicTerm> optional = academicTermRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Academic term not present");
     }
-    AcademicTerm term = optional.get();
 
-    return AcademicTerm.toDto(term);
+    return optional.get();
   }
 
-  public void save(AcademicTermDto termDto) {
-    AcademicTerm term = AcademicTerm.fromDto(termDto);
+  public void save(AcademicTerm term) {
     academicTermRepo.save(term);
   }
 
-  public void delete(AcademicTermDto termDto) {
-    AcademicTerm term = AcademicTerm.fromDto(termDto);
+  public void delete(AcademicTerm term) {
     academicTermRepo.delete(term);
   }
 }

@@ -2,7 +2,9 @@ package ua.gaponov.school.academicyear;
 
 import static ua.gaponov.school.utils.UrlUtils.ACADEMIC_YEAR_URL;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import ua.gaponov.school.exception.AcademicYearNotFoundException;
 import ua.gaponov.school.exception.SchoolNotFoundException;
+import ua.gaponov.school.school.School;
 import ua.gaponov.school.school.SchoolDto;
 import ua.gaponov.school.school.SchoolService;
 import ua.gaponov.school.utils.DateUtils;
@@ -30,8 +33,14 @@ public class AcademicYearController {
   @GetMapping
   public ModelAndView list() {
     ModelAndView result = new ModelAndView("academic-year/index");
-    List<AcademicYearDto> list = academicYearService.getAll();
-    List<SchoolDto> schools = schoolService.getAll();
+    List<AcademicYearDto> list = academicYearService.getAll().stream()
+        .map(AcademicYear::toDto)
+        .sorted(Comparator.comparing(yearDto -> (Integer) yearDto.getId()))
+        .collect(Collectors.toList());
+    List<SchoolDto> schools = schoolService.getAll().stream()
+        .map(School::toDto)
+        .sorted(Comparator.comparing(SchoolDto::getName))
+        .collect(Collectors.toList());
 
     result.addObject("years", list);
     result.addObject("schools", schools);
@@ -46,17 +55,17 @@ public class AcademicYearController {
       @RequestParam(value = "endDate") String endDate,
       @RequestParam(value = "school_id") int schoolId) {
 
-    AcademicYearDto academicYearDto = null;
-    SchoolDto school = null;
+    AcademicYear academicYear = null;
+    School school = null;
     try {
       school = schoolService.findById(schoolId);
-      academicYearDto = AcademicYearDto.builder()
+      academicYear = AcademicYear.builder()
           .name(name)
-          .startDate(DateUtils.getSqlFormaDateFromEuropean(startDate))
-          .endDate(DateUtils.getSqlFormaDateFromEuropean(endDate))
+          .startDate(DateUtils.getLocalDateFromString(startDate))
+          .endDate(DateUtils.getLocalDateFromString(endDate))
           .school(school)
           .build();
-      academicYearService.save(academicYearDto);
+      academicYearService.save(academicYear);
     } catch (NotFoundException e) {
       throw new SchoolNotFoundException("School not found with id: " + schoolId);
     }
@@ -70,10 +79,14 @@ public class AcademicYearController {
     AcademicYearDto academicYearDto = null;
 
     try {
-      academicYearDto = academicYearService.findById(id);
+      academicYearDto = AcademicYear.toDto(academicYearService.findById(id));
 
       result.setViewName("academic-year/edit");
-      List<SchoolDto> schools = schoolService.getAll();
+      List<SchoolDto> schools = schoolService.getAll().stream()
+          .map(School::toDto)
+          .sorted(Comparator.comparing(SchoolDto::getName))
+          .collect(Collectors.toList());
+
       result.addObject("year", academicYearDto);
       result.addObject("schools", schools);
     } catch (NotFoundException e) {
@@ -90,17 +103,17 @@ public class AcademicYearController {
       @RequestParam(value = "endDate") String endDate,
       @RequestParam(value = "school_id") int schoolId) {
 
-    SchoolDto school = null;
+    School school = null;
     try {
       school = schoolService.findById(schoolId);
-      AcademicYearDto academicYearDto = null;
-      academicYearDto = academicYearService.findById(id);
+      AcademicYear academicYear = null;
+      academicYear = academicYearService.findById(id);
 
-      academicYearDto.setSchool(school);
-      academicYearDto.setName(name);
-      academicYearDto.setStartDate(startDate);
-      academicYearDto.setEndDate(endDate);
-      academicYearService.save(academicYearDto);
+      academicYear.setSchool(school);
+      academicYear.setName(name);
+      academicYear.setStartDate(DateUtils.getLocalDateFromString(startDate));
+      academicYear.setEndDate(DateUtils.getLocalDateFromString(endDate));
+      academicYearService.save(academicYear);
     } catch (NotFoundException e) {
       throw new AcademicYearNotFoundException("Academic year not found with id: " + id);
     }
@@ -110,13 +123,13 @@ public class AcademicYearController {
 
   @PostMapping("/delete")
   public RedirectView delete(@RequestParam(value = "id") int id) {
-    AcademicYearDto academicYearDto = null;
+    AcademicYear academicYear = null;
     try {
-      academicYearDto = academicYearService.findById(id);
+      academicYear = academicYearService.findById(id);
     } catch (NotFoundException e) {
       throw new AcademicYearNotFoundException("Academic year not found with id: " + id);
     }
-    academicYearService.delete(academicYearDto);
+    academicYearService.delete(academicYear);
 
     return new RedirectView(ACADEMIC_YEAR_URL);
   }
