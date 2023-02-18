@@ -39,14 +39,14 @@ CREATE UNIQUE INDEX users_username_idx ON public.users USING btree (username);
 
 CREATE TABLE public.grades (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	"name" varchar(3) NOT NULL,
-	rate numeric NOT NULL,
+	name varchar(3) NOT NULL,
+	rate numeric(5,2) NOT NULL,
 	CONSTRAINT grades_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE public.courses (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	"name" varchar(100) NOT NULL,
+	name varchar(100) NOT NULL,
 	active bool NULL,
 	description varchar(500) NULL,
 	CONSTRAINT courses_pkey PRIMARY KEY (id)
@@ -84,7 +84,7 @@ CREATE TABLE public.students_grades (
 	student_id int4 NOT NULL,
 	course_id int4 NOT NULL,
 	grade int4 NOT NULL,
-	"date" date NOT NULL,
+	grade_date date NOT NULL,
 	CONSTRAINT students_grades_pkey PRIMARY KEY (id),
 	CONSTRAINT grades_student_id_fk_students FOREIGN KEY (student_id) REFERENCES public.students(id),
 	CONSTRAINT students_grades_course_id_fkey FOREIGN KEY (course_id) REFERENCES public.courses(id)

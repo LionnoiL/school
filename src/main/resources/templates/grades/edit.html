@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <title>Редагування оцінки</title>
+</head>
+
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+  <div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Видалення оцінки</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p th:text="'Видалити оцінку '+${grade.name}+'?'"></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Відмова</button>
+          <form action="/grades/delete" method="post">
+            <input type="hidden" name="id" th:value="${grade.id}">
+            <button type="submit" class="btn btn-primary" data-toggle="modal"
+                    data-target="#modal-add">Видалити
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="content-wrapper">
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1>Редагування оцінки</h1>
+          </div>
+
+          <div class="col-sm-6">
+            <ol class="float-right">
+              <button type="button" class="btn btn-block btn-outline-danger" data-toggle="modal"
+                      data-target="#modal-delete">Видалити
+              </button>
+            </ol>
+          </div>
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <div class="col-md-12">
+      <div class="card card-default">
+
+        <form action="/grades/edit" method="post" id="editform">
+
+          <div class="card-body p-0 m-3">
+            <div class="bs-stepper-content">
+              <div class="form-group">
+                <label for="name">Назва</label>
+                <input type="text" class="form-control form-control-lg" id="name" name="name"
+                       th:value="${grade.name}">
+              </div>
+
+
+              <div class="form-group">
+                <label for="rate">Відсоток</label>
+                <input type="number" min="0" max="100" step="0.01" class="form-control form-control-lg" id="rate" name="rate"
+                       placeholder="Введіть відсоток оцінки" th:value="${grade.rate}">
+              </div>
+
+              <input type="hidden" name="id" th:value="${grade.id}">
+
+            </div>
+
+          </div>
+
+          <div class="card-footer">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <a href="/grades" class="btn btn-default mr-1">Відмова</a>
+              <button type="submit" class="btn btn-success">Зберегти</button>
+            </div>
+          </div>
+
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<div layout:fragment="script" th:remove="tag">
+
+  <script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="plugins/jquery-validation/additional-methods.min.js"></script>
+
+  <script>
+
+$(function () {
+  $.validator.setDefaults({
+    submitHandler: function () {
+      $('#submit').attr('disabled','disabled');
+      form.submit();
+    }
+  });
+  $('#editform').validate({
+    rules: {
+      name: {
+        required: true
+      },
+    },
+    messages: {
+      name: {
+        required: "Введіть назву"
+      },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+});
+
+  </script>
+</div>
+
+
+
+</body>
+</html>

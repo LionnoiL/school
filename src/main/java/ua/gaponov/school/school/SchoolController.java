@@ -19,7 +19,7 @@ import ua.gaponov.school.exception.SchoolNotFoundException;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/school")
+@RequestMapping(SCHOOL_URL)
 public class SchoolController {
 
   private final SchoolService service;

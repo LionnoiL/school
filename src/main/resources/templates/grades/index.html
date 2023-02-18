@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <title>Оцінки</title>
+</head>
+<body>
+
+<div layout:fragment="content" th:remove="tag">
+
+  <div class="modal fade" id="modal-add">
+    <div class="modal-dialog modal-lg">
+      <form id="editform" action="/grades/add" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Створення оцінки</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group">
+              <label for="name">Назва</label>
+              <input type="text" class="form-control form-control-lg" id="name" name="name"
+                     placeholder="Введіть назву оцінки">
+            </div>
+
+            <div class="form-group">
+              <label for="rate">Відсоток</label>
+              <input type="number" min="0" max="100" step="0.01" class="form-control form-control-lg" id="rate" name="rate"
+                     placeholder="Введіть відсоток оцінки">
+            </div>
+
+
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+            <button type="submit" class="btn btn-success">Зберегти</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <div class="content-wrapper">
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Оцінки</h1>
+          </div>
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+
+    <div class="col-md-12">
+      <div class="card card-default">
+
+
+        <div class="card-header p-2">
+          <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-primary m-1 btn-lg" data-toggle="modal"
+                    data-target="#modal-add">
+              Додати оцінку
+            </button>
+          </div>
+        </div>
+
+        <div class="card-body p-0 m-3">
+
+          <div class="col-12 table-responsive">
+            <table id="datatable" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Назва</th>
+                <th>Відсоток</th>
+              </thead>
+              <tbody>
+              <tr th:each="grade: ${grades}">
+                <th th:text="${grade.id}"></th>
+                <td>
+                  <a th:href="@{'/grades/edit/' + ${grade.id}}" th:text="${grade.name}"></a>
+                </td>
+                <td th:text="${grade.rate}"></td>
+              </tr>
+              </tbody>
+
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div layout:fragment="css" th:remove="tag">
+  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+</div>
+
+
+<div layout:fragment="script" th:remove="tag">
+
+  <script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="plugins/jquery-validation/additional-methods.min.js"></script>
+
+  <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+  <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="plugins/jszip/jszip.min.js"></script>
+  <script src="plugins/pdfmake/pdfmake.min.js"></script>
+  <script src="plugins/pdfmake/vfs_fonts.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+  <script>
+
+$(function () {
+                $("#datatable").DataTable({
+                  language: {
+                      url:  '/localisation/datatable-uk.json'
+                  },
+                  responsive: true,
+                  lengthChange: true,
+                  autoWidth: false
+                }).buttons().container().appendTo('#datatable_wrapper .col-md-6:eq(0)');
+
+  $.validator.setDefaults({
+
+    submitHandler: function () {
+      $('#submit').attr('disabled','disabled');
+      form.submit();
+    }
+  });
+  $('#editform').validate({
+    rules: {
+      name: {
+        required: true,
+      },
+    },
+    messages: {
+      name: {
+        required: "Введіть назву",
+      },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+});
+
+  </script>
+</div>
+
+
+</body>
+</html>
