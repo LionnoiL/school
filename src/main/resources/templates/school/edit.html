@@ -59,69 +59,131 @@
     </section>
 
     <div class="col-md-12">
-      <div class="card card-default">
 
-        <form action="/school/edit" method="post" id="editform">
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#tab1">Основні</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab2">Академічні роки</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#tab3">Семестри</a>
+      </li>
+    </ul>
 
+    <div class="tab-content">
+      <div id="tab1" class="tab-pane fade show active">
+        <div class="card card-default">
+
+          <form action="/school/edit" method="post" id="editform">
+
+            <div class="card-body p-0 m-3">
+              <div class="bs-stepper-content">
+                <div class="form-group">
+                  <label for="name">Назва</label>
+                  <input type="text" class="form-control form-control-lg" id="name" name="name"
+                         th:value="${school.name}">
+                </div>
+
+                <div class="form-group">
+                  <label for="address">Адреса</label>
+                  <input type="text" class="form-control form-control-lg" id="address" name="address"
+                         th:value="${school.address}">
+                </div>
+
+                <div class="form-group">
+                  <label for="description">Опис</label>
+                  <input type="text" class="form-control form-control-lg" id="description"
+                         name="description" th:value="${school.description}">
+                </div>
+
+                <input type="hidden" name="id" th:value="${school.id}">
+
+              </div>
+
+            </div>
+
+            <div class="card-footer">
+              <div class="btn-group" role="group">
+
+                <ul class="nav nav-pills mr-1">
+                  <li class="nav-item dropdown">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                      Операції <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                      <a class="dropdown-item" tabindex="-1" href="#">Створити новий копіюванням</a>
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" tabindex="-1" href="" data-toggle="modal"
+                         data-target="#modal-delete">Видалити</a>
+                    </div>
+                  </li>
+                </ul>
+
+                <a href="/school" class="btn btn-default mr-1">Відмова</a>
+                <button type="submit" class="btn btn-success">Зберегти</button>
+
+
+              </div>
+
+
+
+
+            </div>
+
+
+          </form>
+
+        </div>
+      </div>
+      <div id="tab2" class="tab-pane fade">
+        <div class="card card-default">
           <div class="card-body p-0 m-3">
-            <div class="bs-stepper-content">
-              <div class="form-group">
-                <label for="name">Назва</label>
-                <input type="text" class="form-control form-control-lg" id="name" name="name"
-                       th:value="${school.name}">
-              </div>
+            <div class="col-12 table-responsive">
+              <table id="datatable" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th style="width: 20px">#</th>
+                  <th>Назва</th>
+                  <th>Початок</th>
+                  <th>Кінець</th>
+                  <th>Школа</th>
+                </thead>
+                <tbody>
+                <tr th:each="year: ${years}">
+                  <th th:text="${year.id}"></th>
+                  <td>
+                    <a th:href="@{'/academic-year/edit/' + ${year.id}}" th:text="${year.name}">view</a>
+                  </td>
+                  <td th:text="${year.startDate}"></td>
+                  <td th:text="${year.endDate}"></td>
+                  <td th:text="${year.school.name}"></td>
+                </tr>
+                </tbody>
 
-              <div class="form-group">
-                <label for="address">Адреса</label>
-                <input type="text" class="form-control form-control-lg" id="address" name="address"
-                       th:value="${school.address}">
-              </div>
-
-              <div class="form-group">
-                <label for="description">Опис</label>
-                <input type="text" class="form-control form-control-lg" id="description"
-                       name="description" th:value="${school.description}">
-              </div>
-
-              <input type="hidden" name="id" th:value="${school.id}">
-
+              </table>
             </div>
-
           </div>
-
           <div class="card-footer">
-            <div class="btn-group" role="group">
-
-              <ul class="nav nav-pills mr-1">
-                <li class="nav-item dropdown">
-                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                    Операції <span class="caret"></span>
-                  </a>
-                  <div class="dropdown-menu">
-                    <a class="dropdown-item" tabindex="-1" href="#">Створити новий копіюванням</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" tabindex="-1" href="" data-toggle="modal"
-                       data-target="#modal-delete">Видалити</a>
-                  </div>
-                </li>
-              </ul>
-
-              <a href="/school" class="btn btn-default mr-1">Відмова</a>
-              <button type="submit" class="btn btn-success">Зберегти</button>
-
-
-            </div>
-
-
-
-
           </div>
-
-
-        </form>
-
+        </div>
+      </div>
+      <div id="tab3" class="tab-pane fade">
+        <div class="card card-default">
+          <div class="card-body p-0 m-3">
+          </div>
+          <div class="card-footer">
+          </div>
+        </div>
       </div>
     </div>
+
+
+
+    </div>
+
+
 
   </div>
 

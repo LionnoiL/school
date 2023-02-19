@@ -16,6 +16,10 @@ public class AcademicYearService {
     return academicYearRepo.findAll();
   }
 
+  public List<AcademicYear> getAllBySchool(int id) {
+    return academicYearRepo.findBySchoolId(id);
+  }
+
   public AcademicYear findById(int id) throws NotFoundException {
     Optional<AcademicYear> optional = academicYearRepo.findById(id);
     if (optional.isEmpty()) {

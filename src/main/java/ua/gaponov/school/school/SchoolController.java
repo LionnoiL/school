@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
+import ua.gaponov.school.academicyear.AcademicYear;
+import ua.gaponov.school.academicyear.AcademicYearDto;
+import ua.gaponov.school.academicyear.AcademicYearService;
 import ua.gaponov.school.exception.SchoolNotFoundException;
 
 @RequiredArgsConstructor
@@ -23,6 +26,7 @@ import ua.gaponov.school.exception.SchoolNotFoundException;
 public class SchoolController {
 
   private final SchoolService service;
+  private final AcademicYearService academicYearService;
 
   @GetMapping
   public ModelAndView list() {
@@ -57,9 +61,13 @@ public class SchoolController {
 
     try {
       schoolDto = School.toDto(service.findById(id));
-
+      List<AcademicYearDto> years = academicYearService.getAllBySchool(id).stream()
+          .map(AcademicYear::toDto)
+          .sorted(Comparator.comparing(AcademicYearDto::getId))
+          .collect(Collectors.toList());
       result.setViewName("school/edit");
       result.addObject("school", schoolDto);
+      result.addObject("years", years);
     } catch (NotFoundException e) {
       result = new ModelAndView("school/not-found");
     }
