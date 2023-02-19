@@ -5,13 +5,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 
 @Entity
 @Data
 @Builder
-public class Grades {
+@Table(name = "grades")
+public class Grade {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -20,28 +22,28 @@ public class Grades {
   @Column(name = "rate")
   private double rate;
 
-  public Grades() {
+  public Grade() {
   }
 
-  public Grades(int id, String name, double rate) {
+  public Grade(int id, String name, double rate) {
     this.id = id;
     this.name = name;
     this.rate = rate;
   }
 
-  public static GradesDto toDto(Grades grades){
-    return GradesDto.builder()
-        .id(grades.getId())
-        .name(grades.getName())
-        .rate(grades.getRate())
+  public static GradeDto toDto(Grade grade){
+    return GradeDto.builder()
+        .id(grade.getId())
+        .name(grade.getName())
+        .rate(grade.getRate())
         .build();
   }
 
-  public static Grades fromDto(GradesDto gradesDto){
-    return Grades.builder()
-        .id(gradesDto.getId())
-        .name(gradesDto.getName())
-        .rate(gradesDto.getRate())
+  public static Grade fromDto(GradeDto gradeDto){
+    return Grade.builder()
+        .id(gradeDto.getId())
+        .name(gradeDto.getName())
+        .rate(gradeDto.getRate())
         .build();
   }
 }

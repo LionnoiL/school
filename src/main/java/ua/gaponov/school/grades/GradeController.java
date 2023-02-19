@@ -20,16 +20,16 @@ import ua.gaponov.school.exception.GradeNotFoundException;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping(GRADES_URL)
-public class GradesController {
+public class GradeController {
 
-  private final GradesService gradesService;
+  private final GradeService gradeService;
 
   @GetMapping
   public ModelAndView list() {
     ModelAndView result = new ModelAndView("grades/index");
-    List<GradesDto> list = gradesService.getAll().stream()
-        .map(Grades::toDto)
-        .sorted(Comparator.comparing(GradesDto::getName))
+    List<GradeDto> list = gradeService.getAll().stream()
+        .map(Grade::toDto)
+        .sorted(Comparator.comparing(GradeDto::getName))
         .collect(Collectors.toList());
     result.addObject("grades", list);
     return result;
@@ -38,12 +38,12 @@ public class GradesController {
   @PostMapping("/add")
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "rate") double rate) {
-    Grades grades = null;
-    grades = Grades.builder()
+    Grade grade = null;
+    grade = Grade.builder()
         .name(name)
         .rate(rate)
         .build();
-    gradesService.save(grades);
+    gradeService.save(grade);
 
     return new RedirectView(GRADES_URL);
   }
@@ -51,13 +51,13 @@ public class GradesController {
   @GetMapping("/edit/{id}")
   public ModelAndView edit(@PathVariable(value = "id") int id) {
     ModelAndView result = new ModelAndView();
-    GradesDto gradesDto = null;
+    GradeDto gradeDto = null;
 
     try {
-      gradesDto = Grades.toDto(gradesService.findById(id));
+      gradeDto = Grade.toDto(gradeService.findById(id));
 
       result.setViewName("grades/edit");
-      result.addObject("grade", gradesDto);
+      result.addObject("grade", gradeDto);
     } catch (NotFoundException e) {
       result = new ModelAndView("grades/not-found");
     }
@@ -69,13 +69,13 @@ public class GradesController {
   public RedirectView editSchool(@RequestParam(value = "id") int id,
       @RequestParam(value = "name") String name,
       @RequestParam(value = "rate") double rate) {
-    Grades grades = null;
+    Grade grade = null;
 
     try {
-      grades = gradesService.findById(id);
-      grades.setName(name);
-      grades.setRate(rate);
-      gradesService.save(grades);
+      grade = gradeService.findById(id);
+      grade.setName(name);
+      grade.setRate(rate);
+      gradeService.save(grade);
     } catch (NotFoundException e) {
       throw new GradeNotFoundException("Grade not found with id: " + id);
     }
@@ -85,10 +85,10 @@ public class GradesController {
 
   @PostMapping("/delete")
   public RedirectView delete(@RequestParam(value = "id") int id) {
-    Grades grades = null;
+    Grade grade = null;
     try {
-      grades = gradesService.findById(id);
-      gradesService.delete(grades);
+      grade = gradeService.findById(id);
+      gradeService.delete(grade);
     } catch (NotFoundException e) {
       throw new GradeNotFoundException("Grade not found with id: " + id);
     }

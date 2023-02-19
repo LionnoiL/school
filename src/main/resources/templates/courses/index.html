@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-  <title>Оцінки</title>
+  <title>Курси</title>
 </head>
 <body>
 
@@ -11,10 +11,10 @@
 
   <div class="modal fade" id="modal-add">
     <div class="modal-dialog modal-lg">
-      <form id="editform" action="/grades/add" method="post">
+      <form id="editform" action="/courses/add" method="post">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 class="modal-title">Створення оцінки</h4>
+            <h4 class="modal-title">Створення курсу</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -24,15 +24,20 @@
             <div class="form-group">
               <label for="name">Назва</label>
               <input type="text" class="form-control form-control-lg" id="name" name="name"
-                     placeholder="Введіть назву оцінки">
+                     placeholder="Введіть назву курсу">
             </div>
+
 
             <div class="form-group">
-              <label for="rate">Відсоток</label>
-              <input type="number" min="0" max="100" step="0.01" class="form-control form-control-lg" id="rate" name="rate"
-                     placeholder="Введіть відсоток оцінки" value="0">
+              <label for="description">Опис</label>
+              <input type="text" class="form-control form-control-lg" id="description"
+                     name="description">
             </div>
 
+            <div class="form-group form-check">
+              <input type="checkbox" class="form-check-input" id="enabled" name="enabled">
+              <label class="form-check-label" for="enabled">Активний</label>
+            </div>
 
           </div>
           <div class="modal-footer justify-content-between">
@@ -51,7 +56,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Оцінки</h1>
+            <h1>Курси</h1>
           </div>
 
         </div>
@@ -67,7 +72,7 @@
           <div class="btn-group" role="group" aria-label="Basic example">
             <button type="button" class="btn btn-primary m-1 btn-lg" data-toggle="modal"
                     data-target="#modal-add">
-              Додати оцінку
+              Додати курс
             </button>
           </div>
         </div>
@@ -80,15 +85,23 @@
               <tr>
                 <th style="width: 20px">#</th>
                 <th>Назва</th>
-                <th>Відсоток</th>
+                <th>Опис</th>
+                <th style="width: 20px">Активний</th>
               </thead>
               <tbody>
-              <tr th:each="grade: ${grades}">
-                <th th:text="${grade.id}"></th>
+              <tr th:each="course: ${courses}">
+                <th th:text="${course.id}"></th>
                 <td>
-                  <a th:href="@{'/grades/edit/' + ${grade.id}}" th:text="${grade.name}"></a>
+                  <a th:href="@{'/courses/edit/' + ${course.id}}" th:text="${course.name}"></a>
                 </td>
-                <td th:text="${grade.rate}"></td>
+                <td th:text="${course.description}"></td>
+                <td class="text-center">
+                  <div th:switch="${course.active}">
+                    <span class="badge bg-success" th:case="true">Так</span>
+                    <span class="badge bg-danger" th:case="false">Ні</span>
+                  </div>
+
+                </td>
               </tr>
               </tbody>
 
@@ -151,11 +164,13 @@ $(function () {
     rules: {
       name: {
         required: true,
+        minlength: 5
       },
     },
     messages: {
       name: {
         required: "Введіть назву",
+        minlength: "Мінімальна довжина назви 5 символів"
       },
     },
     errorElement: 'span',

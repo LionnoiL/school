@@ -8,16 +8,16 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class GradesService {
+public class GradeService {
 
-  private final GradesRepo gradesRepo;
+  private final GradeRepo gradeRepo;
 
-  public List<Grades> getAll() {
-    return gradesRepo.findAll();
+  public List<Grade> getAll() {
+    return gradeRepo.findAll();
   }
 
-  public Grades findById(int id) throws NotFoundException {
-    Optional<Grades> optional = gradesRepo.findById(id);
+  public Grade findById(int id) throws NotFoundException {
+    Optional<Grade> optional = gradeRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Grades not present");
     }
@@ -25,11 +25,11 @@ public class GradesService {
     return optional.get();
   }
 
-  public void save(Grades grades) {
-    gradesRepo.save(grades);
+  public void save(Grade grade) {
+    gradeRepo.save(grade);
   }
 
-  public void delete(Grades grades) {
-    gradesRepo.delete(grades);
+  public void delete(Grade grade) {
+    gradeRepo.delete(grade);
   }
 }
