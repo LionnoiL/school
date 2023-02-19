@@ -35,7 +35,7 @@ public class AcademicYearController {
     ModelAndView result = new ModelAndView("academic-year/index");
     List<AcademicYearDto> list = academicYearService.getAll().stream()
         .map(AcademicYear::toDto)
-        .sorted(Comparator.comparing(yearDto -> (Integer) yearDto.getId()))
+        .sorted(Comparator.comparing(AcademicYearDto::getId))
         .collect(Collectors.toList());
     List<SchoolDto> schools = schoolService.getAll().stream()
         .map(School::toDto)

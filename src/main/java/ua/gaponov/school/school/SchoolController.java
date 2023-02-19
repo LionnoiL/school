@@ -29,7 +29,7 @@ public class SchoolController {
     ModelAndView result = new ModelAndView("school/index");
     List<SchoolDto> list = service.getAll().stream()
         .map(School::toDto)
-        .sorted(Comparator.comparing(SchoolDto::getName))
+        .sorted(Comparator.comparing(SchoolDto::getId))
         .collect(Collectors.toList());
     result.addObject("schools", list);
     return result;

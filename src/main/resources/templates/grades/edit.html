@@ -47,9 +47,7 @@
 
           <div class="col-sm-6">
             <ol class="float-right">
-              <button type="button" class="btn btn-block btn-outline-danger" data-toggle="modal"
-                      data-target="#modal-delete">Видалити
-              </button>
+
             </ol>
           </div>
 
@@ -84,7 +82,22 @@
           </div>
 
           <div class="card-footer">
-            <div class="btn-group" role="group" aria-label="Basic example">
+            <div class="btn-group" role="group">
+
+              <ul class="nav nav-pills mr-1">
+                <li class="nav-item dropdown">
+                  <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                    Операції <span class="caret"></span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" tabindex="-1" href="" data-toggle="modal"
+                       data-target="#modal-delete">Видалити</a>
+                  </div>
+                </li>
+              </ul>
+
+
               <a href="/grades" class="btn btn-default mr-1">Відмова</a>
               <button type="submit" class="btn btn-success">Зберегти</button>
             </div>

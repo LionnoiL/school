@@ -29,7 +29,7 @@ public class GradeController {
     ModelAndView result = new ModelAndView("grades/index");
     List<GradeDto> list = gradeService.getAll().stream()
         .map(Grade::toDto)
-        .sorted(Comparator.comparing(GradeDto::getName))
+        .sorted(Comparator.comparing(GradeDto::getId))
         .collect(Collectors.toList());
     result.addObject("grades", list);
     return result;

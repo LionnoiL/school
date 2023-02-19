@@ -29,7 +29,7 @@ public class CourseController {
     ModelAndView result = new ModelAndView("courses/index");
     List<CourseDto> list = courseService.getAll().stream()
         .map(Course::toDto)
-        .sorted(Comparator.comparing(CourseDto::getName))
+        .sorted(Comparator.comparing(CourseDto::getId))
         .collect(Collectors.toList());
     result.addObject("courses", list);
     return result;

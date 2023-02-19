@@ -36,7 +36,7 @@ public class AcademicTermController {
 
     List<AcademicTermDto> list = academicTermService.getAll().stream()
         .map(AcademicTerm::toDto)
-        .sorted(Comparator.comparing(termDto -> (Integer) termDto.getId()))
+        .sorted(Comparator.comparing(AcademicTermDto::getId))
         .collect(Collectors.toList());
 
     List<AcademicYearDto> years = academicYearService.getAll().stream()
