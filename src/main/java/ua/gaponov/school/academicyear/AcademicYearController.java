@@ -33,7 +33,7 @@ public class AcademicYearController {
   @GetMapping
   public ModelAndView list() {
     ModelAndView result = new ModelAndView("academic-year/index");
-    List<AcademicYearDto> list = academicYearService.getAll().stream()
+    List<AcademicYearDto> years = academicYearService.getAll().stream()
         .map(AcademicYear::toDto)
         .sorted(Comparator.comparing(AcademicYearDto::getId))
         .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class AcademicYearController {
         .sorted(Comparator.comparing(SchoolDto::getName))
         .collect(Collectors.toList());
 
-    result.addObject("years", list);
+    result.addObject("years", years);
     result.addObject("schools", schools);
 
     return result;
@@ -51,8 +51,8 @@ public class AcademicYearController {
 
   @PostMapping("/add")
   public RedirectView add(@RequestParam(value = "name") String name,
-      @RequestParam(value = "startDate") String startDate,
-      @RequestParam(value = "endDate") String endDate,
+      @RequestParam(value = "startDateAddYear") String startDate,
+      @RequestParam(value = "endDateAddYear") String endDate,
       @RequestParam(value = "school_id") int schoolId) {
 
     AcademicYear academicYear = null;
@@ -74,14 +74,20 @@ public class AcademicYearController {
   }
 
   @GetMapping("/edit/{id}")
-  public ModelAndView edit(@PathVariable(value = "id") int id) {
+  public ModelAndView edit(@PathVariable(value = "id") int id,
+      @RequestParam(value = "back", required = false) String back) {
     ModelAndView result = new ModelAndView();
     AcademicYearDto academicYearDto = null;
 
     try {
       academicYearDto = AcademicYear.toDto(academicYearService.findById(id));
 
-      result.setViewName("academic-year/edit");
+//      if (back!=null){
+//        result.setViewName(back);
+//      } else {
+        result.setViewName("academic-year/edit");
+    //  }
+
       List<SchoolDto> schools = schoolService.getAll().stream()
           .map(School::toDto)
           .sorted(Comparator.comparing(SchoolDto::getName))
@@ -99,8 +105,8 @@ public class AcademicYearController {
   @PostMapping("/edit")
   public RedirectView editYear(@RequestParam(value = "id") int id,
       @RequestParam(value = "name") String name,
-      @RequestParam(value = "startDate") String startDate,
-      @RequestParam(value = "endDate") String endDate,
+      @RequestParam(value = "startDateAddYear") String startDate,
+      @RequestParam(value = "endDateAddYear") String endDate,
       @RequestParam(value = "school_id") int schoolId) {
 
     School school = null;

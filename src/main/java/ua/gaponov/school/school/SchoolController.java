@@ -25,13 +25,13 @@ import ua.gaponov.school.exception.SchoolNotFoundException;
 @RequestMapping(SCHOOL_URL)
 public class SchoolController {
 
-  private final SchoolService service;
+  private final SchoolService schoolService;
   private final AcademicYearService academicYearService;
 
   @GetMapping
   public ModelAndView list() {
     ModelAndView result = new ModelAndView("school/index");
-    List<SchoolDto> list = service.getAll().stream()
+    List<SchoolDto> list = schoolService.getAll().stream()
         .map(School::toDto)
         .sorted(Comparator.comparing(SchoolDto::getId))
         .collect(Collectors.toList());
@@ -49,7 +49,7 @@ public class SchoolController {
         .name(name)
         .description(description)
         .build();
-    service.save(school);
+    schoolService.save(school);
 
     return new RedirectView(SCHOOL_URL);
   }
@@ -60,13 +60,21 @@ public class SchoolController {
     SchoolDto schoolDto = null;
 
     try {
-      schoolDto = School.toDto(service.findById(id));
+      schoolDto = School.toDto(schoolService.findById(id));
+
       List<AcademicYearDto> years = academicYearService.getAllBySchool(id).stream()
           .map(AcademicYear::toDto)
           .sorted(Comparator.comparing(AcademicYearDto::getId))
           .collect(Collectors.toList());
+
+      List<SchoolDto> schools = schoolService.getAll().stream()
+          .map(School::toDto)
+          .sorted(Comparator.comparing(SchoolDto::getName))
+          .collect(Collectors.toList());
+
       result.setViewName("school/edit");
       result.addObject("school", schoolDto);
+      result.addObject("schools", schools);
       result.addObject("years", years);
     } catch (NotFoundException e) {
       result = new ModelAndView("school/not-found");
@@ -83,11 +91,11 @@ public class SchoolController {
     School school = null;
 
     try {
-      school = service.findById(id);
+      school = schoolService.findById(id);
       school.setAddress(address);
       school.setDescription(description);
       school.setName(name);
-      service.save(school);
+      schoolService.save(school);
     } catch (NotFoundException e) {
       throw new SchoolNotFoundException("School not found with id: " + id);
     }
@@ -99,8 +107,8 @@ public class SchoolController {
   public RedirectView delete(@RequestParam(value = "id") int id) {
     School school = null;
     try {
-      school = service.findById(id);
-      service.delete(school);
+      school = schoolService.findById(id);
+      schoolService.delete(school);
     } catch (NotFoundException e) {
       throw new SchoolNotFoundException("School not found with id: " + id);
     }
