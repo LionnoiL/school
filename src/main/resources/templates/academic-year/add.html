@@ -63,6 +63,14 @@
 
             </div>
 
+            <div th:switch="${return_controller!=null}">
+              <input type="hidden" name="return_controller" th:value="${return_controller}" th:case="true">
+            </div>
+
+            <div th:switch="${return_params!=null}">
+              <input type="hidden" name="return_params" th:value="${return_params}" th:case="true">
+            </div>
+
 
           </div>
           <div class="modal-footer justify-content-between">

@@ -53,7 +53,9 @@ public class AcademicYearController {
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "startDateAddYear") String startDate,
       @RequestParam(value = "endDateAddYear") String endDate,
-      @RequestParam(value = "school_id") int schoolId) {
+      @RequestParam(value = "school_id") int schoolId,
+      @RequestParam(value = "return_controller", required = false) String controller,
+      @RequestParam(value = "return_params", required = false) String params) {
 
     AcademicYear academicYear = null;
     School school = null;
@@ -70,7 +72,15 @@ public class AcademicYearController {
       throw new SchoolNotFoundException("School not found with id: " + schoolId);
     }
 
-    return new RedirectView(ACADEMIC_YEAR_URL);
+    if (controller==null) {
+      return new RedirectView(ACADEMIC_YEAR_URL);
+    }
+
+    if (params==null){
+      params = "";
+    }
+
+    return new RedirectView("/"+controller+"/"+params);
   }
 
   @GetMapping("/edit/{id}")

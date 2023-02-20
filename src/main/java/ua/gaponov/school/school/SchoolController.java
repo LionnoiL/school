@@ -76,6 +76,8 @@ public class SchoolController {
       result.addObject("school", schoolDto);
       result.addObject("schools", schools);
       result.addObject("years", years);
+      result.addObject("return_controller", "school/edit");
+      result.addObject("return_params", id);
     } catch (NotFoundException e) {
       result = new ModelAndView("school/not-found");
     }
