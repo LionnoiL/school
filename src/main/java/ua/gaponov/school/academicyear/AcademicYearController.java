@@ -18,7 +18,6 @@ import org.springframework.web.servlet.view.RedirectView;
 import ua.gaponov.school.exception.AcademicYearNotFoundException;
 import ua.gaponov.school.exception.SchoolNotFoundException;
 import ua.gaponov.school.school.School;
-import ua.gaponov.school.school.SchoolDto;
 import ua.gaponov.school.school.SchoolService;
 import ua.gaponov.school.utils.DateUtils;
 
@@ -65,15 +64,15 @@ public class AcademicYearController {
       throw new SchoolNotFoundException("School not found with id: " + schoolId);
     }
 
-    if (controller==null) {
+    if (controller == null) {
       return new RedirectView(ACADEMIC_YEAR_URL);
     }
 
-    if (params==null){
+    if (params == null) {
       params = "";
     }
 
-    return new RedirectView("/"+controller+"/"+params);
+    return new RedirectView("/" + controller + "/" + params);
   }
 
   @GetMapping("/{id}")

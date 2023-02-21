@@ -39,14 +39,7 @@ public class AcademicTermController {
         .sorted(Comparator.comparing(AcademicTermDto::getId))
         .collect(Collectors.toList());
 
-    List<AcademicYearDto> years = academicYearService.getAll().stream()
-        .map(AcademicYear::toDto)
-        .sorted(Comparator.comparing(yearDto -> (Integer) yearDto.getId()))
-        .collect(Collectors.toList());
-
     result.addObject("terms", list);
-    result.addObject("years", years);
-
     return result;
   }
 

@@ -16,6 +16,14 @@ public class AcademicYearService {
     return academicYearRepo.findAll();
   }
 
+  public List<AcademicYear> getAll(String keywords) {
+    if (keywords != null && !keywords.isEmpty()) {
+      return academicYearRepo.findAllByKeywords(keywords);
+    } else {
+      return academicYearRepo.findAll();
+    }
+  }
+
   public List<AcademicYear> getAllBySchool(int id) {
     return academicYearRepo.findBySchoolId(id);
   }

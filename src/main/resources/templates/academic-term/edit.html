@@ -101,9 +101,10 @@
                 <div class="form-group">
                   <label>Академічний рік</label>
 
-                  <select name="academic_year_id" class="form-control select2" style="width: 100%;">
-                    <option th:each="year : ${years}" th:value="${year.id}" th:text="${year.school.name} + '  ' + ${year.name}" th:selected="${term.academicYear.id==year.id}"></option>
-                    </option>
+                  <select name="academic_year_id" id="academic_year_id" class="form-control select2">
+                    <div th:switch="${term.academicYear!=null}">
+                      <option selected="selected" th:value="${term.academicYear.id}" th:text="${term.academicYear.school.name} + '  ' + ${term.academicYear.name}" th:case="true"></option>
+                    </div>
                   </select>
 
 
@@ -180,13 +181,27 @@
   <script>
                 $(function () {
 
-                //Initialize Select2 Elements
-                  $('.select2').select2();
-
-                  //Initialize Select2 Elements
-                  $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                  });
+                $('#academic_year_id').select2({
+                      ajax: {
+                        url: '/api/v1/year',
+                        type: "get",
+                        dataType: 'json',
+                        data: function (params) {
+                          return {
+                            search: params.term
+                          }
+                        },
+                        processResults: function (data) {
+                          $.each(data, function(i, d) {
+                            data[i]['text'] = d.school.name + ' ' + d.name;
+                          });
+                          return {
+                              results: data
+                          };
+                      },
+                      cache: true
+                      }
+                    });
 
 
                   //Date picker

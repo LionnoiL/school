@@ -1,10 +1,5 @@
 package ua.gaponov.school.academicyear;
 
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+public interface AcademicYearRepo extends AcademicYearRepoBasic, AcademicYearRepoCustom{
 
-public interface AcademicYearRepo extends JpaRepository<AcademicYear, Integer> {
-  @Query(nativeQuery = true, value = "SELECT * FROM academic_year y WHERE y.school_id = :id")
-  List<AcademicYear> findBySchoolId(int id);
 }
