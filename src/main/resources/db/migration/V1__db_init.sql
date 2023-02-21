@@ -54,8 +54,7 @@ CREATE TABLE public.courses (
 
 CREATE TABLE public.school_class (
 	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	number_class int4 NOT NULL,
-	letter_class varchar(2) NULL,
+	number_class varchar(50) NULL,
 	description varchar(500) NULL,
 	school_id int8 NULL,
 	CONSTRAINT school_class_pkey PRIMARY KEY (id),

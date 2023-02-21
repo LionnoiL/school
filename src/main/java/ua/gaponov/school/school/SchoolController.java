@@ -67,17 +67,10 @@ public class SchoolController {
           .sorted(Comparator.comparing(AcademicYearDto::getId))
           .collect(Collectors.toList());
 
-      List<SchoolDto> schools = schoolService.getAll().stream()
-          .map(School::toDto)
-          .sorted(Comparator.comparing(SchoolDto::getName))
-          .collect(Collectors.toList());
-
       result.setViewName("school/edit");
       result.addObject("school", schoolDto);
-      result.addObject("schools", schools);
       result.addObject("years", years);
-      result.addObject("return_controller", "school/edit");
-      result.addObject("return_params", id);
+      result.addObject("returnPath", "/school/"+id);
     } catch (NotFoundException e) {
       result = new ModelAndView("school/not-found");
     }

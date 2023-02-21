@@ -11,4 +11,5 @@ public class UrlUtils {
   public static final String SCHOOL_URL = "/school";
   public static final String GRADES_URL = "/grades";
   public static final String COURSE_URL = "/courses";
+  public static final String SCHOOL_CLASS_URL = "/school-class";
 }

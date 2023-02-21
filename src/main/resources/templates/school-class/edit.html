@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{fragments/layout}">
 <head>
-  <title>Редагування академічного року</title>
+  <title>Редагування шкільного класу</title>
 </head>
 
 <body>
@@ -13,18 +13,18 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Видалення академічного року</h4>
+          <h4 class="modal-title">Видалення шкільного класу</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p th:text="'Видалити академічний рік '+${year.name}+' по школі '+${year.school.name}+'?'"></p>
+          <p th:text="'Видалити шкільний клас '+${schoolClass.name}+' по школі '+${schoolClass.school.name}+'?'"></p>
         </div>
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-default" data-dismiss="modal">Відмова</button>
-          <form action="/academic-year/delete" method="post">
-            <input type="hidden" name="id" th:value="${year.id}">
+          <form action="/school-class/delete" method="post">
+            <input type="hidden" name="id" th:value="${schoolClass.id}">
 
             <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Видалити</button>
           </form>
@@ -41,7 +41,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-sm-6">
-            <h1>Редагування академічного року</h1>
+            <h1>Редагування шкільного класу</h1>
           </div>
 
           <div class="col-sm-6">
@@ -57,58 +57,37 @@
         <div class="col-md-12">
           <div class="card card-default">
 
-            <form action="/academic-year/edit" method="post">
+            <form action="/school-class/edit" method="post">
 
             <div class="card-body p-0 m-3">
               <div class="bs-stepper-content">
 
 
-              <div class="form-group">
-                <label for="name">Назва</label>
-                <input type="text" class="form-control form-control-lg" id="name" name="name" th:value="${year.name}">
-              </div>
-
-                <div class="row">
-              <div class="col-6">
                 <div class="form-group">
-                  <label for="startDateEditYear">Початок року</label>
-
-                  <div class="input-group date" id="startDateEditYear" data-target-input="nearest">
-                    <input type="text" name="startDateEditYear" class="form-control datetimepicker-input" data-target="#startDateEditYear" th:value="${year.startDate}">
-                    <div class="input-group-append" data-target="#startDateEditYear" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-
+                  <label for="name">Назва класу</label>
+                  <input type="text" class="form-control form-control-lg" id="name"
+                         name="name" th:value="${schoolClass.name}">
                 </div>
-              </div>
-                <div class="col-6">
+
 
                 <div class="form-group">
-                  <label for="endDateEditYear">Кінець року</label>
-
-                  <div class="input-group date" id="endDateEditYear" data-target-input="nearest">
-                    <input type="text" name="endDateEditYear" class="form-control datetimepicker-input" data-target="#endDateEditYear" th:value="${year.endDate}">
-                    <div class="input-group-append" data-target="#endDateEditYear" data-toggle="datetimepicker">
-                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
-                  </div>
-
-                </div>
+                  <label for="description">Опис</label>
+                  <input type="text" class="form-control form-control-lg" id="description"
+                         name="description" th:value="${schoolClass.description}">
                 </div>
 
-              </div>
+
 
                 <div class="form-group">
                   <label>Школа</label>
                   <select name="school_id" id="school_id" class="form-control select2">
-                    <div th:switch="${year.school!=null}">
-                      <option selected="selected" th:value="${year.school.id}" th:text="${year.school.name}" th:case="true"></option>
+                    <div th:switch="${schoolClass.school!=null}">
+                      <option selected="selected" th:value="${schoolClass.school.id}" th:text="${schoolClass.school.name}" th:case="true"></option>
                     </div>
                   </select>
                 </div>
 
-              <input type="hidden" name="id" th:value="${year.id}">
+              <input type="hidden" name="id" th:value="${schoolClass.id}">
 
               </div>
 
@@ -131,7 +110,7 @@
                 </ul>
 
 
-                <a href="/academic-year" class="btn btn-default mr-1">Відмова</a>
+                <a href="/school-class" class="btn btn-default mr-1">Відмова</a>
                 <button type="submit" class="btn btn-success">Зберегти</button>
               </div>
             </div>

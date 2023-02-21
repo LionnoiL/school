@@ -69,9 +69,6 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#years">Академічні роки</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#terms">Семестри</a>
-      </li>
     </ul>
 
     <div class="tab-content">
@@ -165,7 +162,7 @@
                 <tr th:each="year: ${years}">
                   <th th:text="${year.id}"></th>
                   <td>
-                    <a th:href="@{'/academic-year/edit/' + ${year.id}}" th:text="${year.name}">view</a>
+                    <a th:href="@{'/academic-year/' + ${year.id}}" th:text="${year.name}">view</a>
                   </td>
                   <td th:text="${year.startDate}"></td>
                   <td th:text="${year.endDate}"></td>
@@ -175,14 +172,6 @@
 
               </table>
             </div>
-          </div>
-          <div class="card-footer">
-          </div>
-        </div>
-      </div>
-      <div id="terms" class="tab-pane fade">
-        <div class="card card-default">
-          <div class="card-body p-0 m-3">
           </div>
           <div class="card-footer">
           </div>
