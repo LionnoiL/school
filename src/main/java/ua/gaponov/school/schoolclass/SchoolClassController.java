@@ -45,7 +45,7 @@ public class SchoolClassController {
   }
 
   @PostMapping("/add")
-  public RedirectView add(@RequestParam(value = "classname") String name,
+  public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "description") String description,
       @RequestParam(value = "school_id") int schoolId,
       @RequestParam(value = "return_path", required = false) String returnPath) {
