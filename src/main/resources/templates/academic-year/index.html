@@ -54,7 +54,7 @@
                   <tr th:each="year: ${years}">
                     <th th:text="${year.id}"></th>
                     <td>
-                      <a th:href="@{'/academic-year/edit/' + ${year.id}}" th:text="${year.name}">view</a>
+                      <a th:href="@{'/academic-year/' + ${year.id}}" th:text="${year.name}">view</a>
                     </td>
                     <td th:text="${year.startDate}"></td>
                     <td th:text="${year.endDate}"></td>

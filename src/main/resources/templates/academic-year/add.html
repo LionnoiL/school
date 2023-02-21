@@ -55,13 +55,15 @@
             <div class="form-group">
               <label>Школа</label>
 
-              <select name="school_id" id="school_id" class="form-control select2" style="width: 100%;">
-                <option th:each="school : ${schools}" th:value="${school.id}" th:text="${school.name}"></option>
-                </option>
+              <select name="school_id" id="school_id" class="form-control">
+                <div th:switch="${school!=null}">
+                  <option selected="selected" th:value="${school.id}" th:text="${school.name}" th:case="true"></option>
+                </div>
               </select>
 
-
             </div>
+
+
 
             <div th:switch="${return_controller!=null}">
               <input type="hidden" name="return_controller" th:value="${return_controller}" th:case="true">
@@ -110,10 +112,30 @@
 
   <script>
 
-
                 $(function () {
 
-                  $('#select2').select2();
+                  $('#school_id').select2({
+                      ajax: {
+                        url: '/api/v1/schools',
+                        type: "get",
+                        dataType: 'json',
+                        data: function (params) {
+                          return {
+                            search: params.term
+                          }
+                        },
+                        processResults: function (data) {
+                          $.each(data, function(i, d) {
+                            data[i]['text'] = d.name;
+                          });
+                          return {
+                              results: data
+                          };
+                      },
+                      cache: true
+                      }
+                    });
+
 
                   //Date picker
                   $('#startDateAddYear').datetimepicker({

@@ -74,7 +74,7 @@ public class AcademicTermController {
     return new RedirectView(ACADEMIC_TERM_URL);
   }
 
-  @GetMapping("/edit/{id}")
+  @GetMapping("/{id}")
   public ModelAndView edit(@PathVariable(value = "id") int id) {
     ModelAndView result = new ModelAndView();
     AcademicTermDto academicTermDto = null;

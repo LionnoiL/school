@@ -86,7 +86,7 @@
               <tr th:each="grade: ${grades}">
                 <th th:text="${grade.id}"></th>
                 <td>
-                  <a th:href="@{'/grades/edit/' + ${grade.id}}" th:text="${grade.name}"></a>
+                  <a th:href="@{'/grades/' + ${grade.id}}" th:text="${grade.name}"></a>
                 </td>
                 <td th:text="${grade.rate}"></td>
               </tr>

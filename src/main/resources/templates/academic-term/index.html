@@ -116,7 +116,7 @@
                   <tr th:each="term: ${terms}">
                     <th th:text="${term.id}"></th>
                     <td>
-                      <a th:href="@{'/academic-term/edit/' + ${term.id}}" th:text="${term.name}">view</a>
+                      <a th:href="@{'/academic-term/' + ${term.id}}" th:text="${term.name}">view</a>
                     </td>
                     <td th:text="${term.startDate}"></td>
                     <td th:text="${term.endDate}"></td>

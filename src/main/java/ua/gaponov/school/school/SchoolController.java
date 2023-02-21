@@ -54,7 +54,7 @@ public class SchoolController {
     return new RedirectView(SCHOOL_URL);
   }
 
-  @GetMapping("/edit/{id}")
+  @GetMapping("/{id}")
   public ModelAndView edit(@PathVariable(value = "id") int id) {
     ModelAndView result = new ModelAndView();
     SchoolDto schoolDto = null;

@@ -37,14 +37,7 @@ public class AcademicYearController {
         .map(AcademicYear::toDto)
         .sorted(Comparator.comparing(AcademicYearDto::getId))
         .collect(Collectors.toList());
-    List<SchoolDto> schools = schoolService.getAll().stream()
-        .map(School::toDto)
-        .sorted(Comparator.comparing(SchoolDto::getName))
-        .collect(Collectors.toList());
-
     result.addObject("years", years);
-    result.addObject("schools", schools);
-
     return result;
   }
 
@@ -83,7 +76,7 @@ public class AcademicYearController {
     return new RedirectView("/"+controller+"/"+params);
   }
 
-  @GetMapping("/edit/{id}")
+  @GetMapping("/{id}")
   public ModelAndView edit(@PathVariable(value = "id") int id,
       @RequestParam(value = "back", required = false) String back) {
     ModelAndView result = new ModelAndView();
@@ -91,20 +84,9 @@ public class AcademicYearController {
 
     try {
       academicYearDto = AcademicYear.toDto(academicYearService.findById(id));
-
-//      if (back!=null){
-//        result.setViewName(back);
-//      } else {
-        result.setViewName("academic-year/edit");
-    //  }
-
-      List<SchoolDto> schools = schoolService.getAll().stream()
-          .map(School::toDto)
-          .sorted(Comparator.comparing(SchoolDto::getName))
-          .collect(Collectors.toList());
+      result.setViewName("academic-year/edit");
 
       result.addObject("year", academicYearDto);
-      result.addObject("schools", schools);
     } catch (NotFoundException e) {
       result = new ModelAndView("academic-year/not-found");
     }
@@ -115,8 +97,8 @@ public class AcademicYearController {
   @PostMapping("/edit")
   public RedirectView editYear(@RequestParam(value = "id") int id,
       @RequestParam(value = "name") String name,
-      @RequestParam(value = "startDateAddYear") String startDate,
-      @RequestParam(value = "endDateAddYear") String endDate,
+      @RequestParam(value = "startDateEditYear") String startDate,
+      @RequestParam(value = "endDateEditYear") String endDate,
       @RequestParam(value = "school_id") int schoolId) {
 
     School school = null;

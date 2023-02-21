@@ -48,7 +48,7 @@ public class GradeController {
     return new RedirectView(GRADES_URL);
   }
 
-  @GetMapping("/edit/{id}")
+  @GetMapping("/{id}")
   public ModelAndView edit(@PathVariable(value = "id") int id) {
     ModelAndView result = new ModelAndView();
     GradeDto gradeDto = null;

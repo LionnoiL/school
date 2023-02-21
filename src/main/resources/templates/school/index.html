@@ -92,7 +92,7 @@
               <tr th:each="school: ${schools}">
                 <th th:text="${school.id}"></th>
                 <td>
-                  <a th:href="@{'/school/edit/' + ${school.id}}" th:text="${school.name}"></a>
+                  <a th:href="@{'/school/' + ${school.id}}" th:text="${school.name}"></a>
                 </td>
                 <td th:text="${school.address}"></td>
                 <td th:text="${school.description}"></td>

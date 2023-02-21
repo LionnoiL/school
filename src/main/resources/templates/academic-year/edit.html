@@ -70,11 +70,11 @@
                 <div class="row">
               <div class="col-6">
                 <div class="form-group">
-                  <label for="startDate">Початок року</label>
+                  <label for="startDateEditYear">Початок року</label>
 
-                  <div class="input-group date" id="startDate" data-target-input="nearest">
-                    <input type="text" name="startDate" class="form-control datetimepicker-input" data-target="#startDate" th:value="${year.startDate}">
-                    <div class="input-group-append" data-target="#startDate" data-toggle="datetimepicker">
+                  <div class="input-group date" id="startDateEditYear" data-target-input="nearest">
+                    <input type="text" name="startDateEditYear" class="form-control datetimepicker-input" data-target="#startDateEditYear" th:value="${year.startDate}">
+                    <div class="input-group-append" data-target="#startDateEditYear" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                   </div>
@@ -84,11 +84,11 @@
                 <div class="col-6">
 
                 <div class="form-group">
-                  <label for="startDate">Кінець року</label>
+                  <label for="endDateEditYear">Кінець року</label>
 
-                  <div class="input-group date" id="endDate" data-target-input="nearest">
-                    <input type="text" name="endDate" class="form-control datetimepicker-input" data-target="#endDate" th:value="${year.endDate}">
-                    <div class="input-group-append" data-target="#endDate" data-toggle="datetimepicker">
+                  <div class="input-group date" id="endDateEditYear" data-target-input="nearest">
+                    <input type="text" name="endDateEditYear" class="form-control datetimepicker-input" data-target="#endDateEditYear" th:value="${year.endDate}">
+                    <div class="input-group-append" data-target="#endDateEditYear" data-toggle="datetimepicker">
                       <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                   </div>
@@ -100,9 +100,10 @@
 
                 <div class="form-group">
                   <label>Школа</label>
-                  <select name="school_id" class="form-control select2" style="width: 100%;">
-                    <option th:each="school : ${schools}" th:value="${school.id}" th:text="${school.name}" th:selected="${school.id==year.school.id}"></option>
-                    </option>
+                  <select name="school_id" id="school_id" class="form-control select2">
+                    <div th:switch="${year.school!=null}">
+                      <option selected="selected" th:value="${year.school.id}" th:text="${year.school.name}" th:case="true"></option>
+                    </div>
                   </select>
                 </div>
 
@@ -176,22 +177,37 @@
   <script>
                 $(function () {
 
-                //Initialize Select2 Elements
-                  $('.select2').select2();
+                  $('#school_id').select2({
+                      ajax: {
+                        url: '/api/v1/schools',
+                        type: "get",
+                        dataType: 'json',
+                        data: function (params) {
+                          return {
+                            search: params.term
+                          }
+                        },
+                        processResults: function (data) {
+                          $.each(data, function(i, d) {
+                            data[i]['text'] = d.name;
+                          });
+                          return {
+                              results: data
+                          };
+                      },
+                      cache: true
+                      }
+                    });
 
-                  //Initialize Select2 Elements
-                  $('.select2bs4').select2({
-                    theme: 'bootstrap4'
-                  });
 
 
                   //Date picker
-                  $('#startDate').datetimepicker({
+                  $('#startDateEditYear').datetimepicker({
                       locale: 'uk',
                       format: 'DD.MM.YYYY'
                   });
 
-                  $('#endDate').datetimepicker({
+                  $('#endDateEditYear').datetimepicker({
                       locale: 'uk',
                       format: 'DD.MM.YYYY'
                   });
@@ -210,11 +226,11 @@
                           required: true,
                           minlength: 5
                         },
-                        startDate: {
+                        startDateEditYear: {
                           required: true,
                           ukrDate : true
                         },
-                        endDate: {
+                        endDateEditYear: {
                           required: true,
                           ukrDate : true
                         },
@@ -227,10 +243,10 @@
                           required: "Введіть назву",
                           minlength: "Мінімальна довжина назви 5 символів"
                         },
-                        startDate: {
+                        startDateEditYear: {
                           required: "Введіть дату початку року",
                         },
-                        endDate: {
+                        endDateEditYear: {
                           required: "Введіть дату кінця року",
                         },
                         academic_year_id: {

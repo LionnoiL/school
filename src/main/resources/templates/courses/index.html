@@ -92,7 +92,7 @@
               <tr th:each="course: ${courses}">
                 <th th:text="${course.id}"></th>
                 <td>
-                  <a th:href="@{'/courses/edit/' + ${course.id}}" th:text="${course.name}"></a>
+                  <a th:href="@{'/courses/' + ${course.id}}" th:text="${course.name}"></a>
                 </td>
                 <td th:text="${course.description}"></td>
                 <td class="text-center">
