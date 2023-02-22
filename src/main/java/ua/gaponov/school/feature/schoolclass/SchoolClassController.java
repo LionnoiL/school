@@ -99,7 +99,7 @@ public class SchoolClassController {
       schoolClass.setDescription(description);
       schoolClassService.save(schoolClass);
     } catch (NotFoundException e) {
-      throw new SchoolClassNotFoundException("School classnot found with id: " + id);
+      throw new SchoolClassNotFoundException("School class not found with id: " + id);
     }
 
     return new RedirectView(SCHOOL_CLASS_URL);

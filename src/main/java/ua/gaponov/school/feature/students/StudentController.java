@@ -87,6 +87,29 @@ public class StudentController {
     return result;
   }
 
+  @PostMapping("/edit")
+  public RedirectView editSchoolClass(@RequestParam(value = "id") int id,
+      @RequestParam(value = "firstName") String firstName,
+      @RequestParam(value = "lastName") String lastName,
+      @RequestParam(value = "class_id") int class_id) {
+
+    SchoolClass schoolClass = null;
+    Student student = null;
+    try {
+      schoolClass = schoolClassService.findById(class_id);
+      student = studentService.findById(id);
+
+      student.setSchoolClass(schoolClass);
+      student.setFirstName(firstName);
+      student.setLastName(lastName);
+      studentService.save(student);
+    } catch (NotFoundException e) {
+      throw new SchoolClassNotFoundException("Student found with id: " + id);
+    }
+
+    return new RedirectView(STUDENT_URL);
+  }
+
   @PostMapping("/delete")
   public RedirectView delete(@RequestParam(value = "id") int id) {
     Student student = null;
