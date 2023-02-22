@@ -1,5 +1,5 @@
 CREATE TABLE public.school (
-	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	title varchar(100) NOT NULL,
 	description varchar(500) NULL,
 	address varchar(250) NULL,
@@ -11,7 +11,7 @@ CREATE TABLE public.academic_year (
 	academic_year_name varchar(50) NOT NULL,
 	start_year date NOT NULL,
 	end_year date NOT NULL,
-	school_id int8 NOT NULL,
+	school_id int4 NOT NULL,
 	CONSTRAINT academic_year_pkey PRIMARY KEY (id),
 	CONSTRAINT year_fk_school FOREIGN KEY (school_id) REFERENCES public.school(id)
 );
@@ -56,7 +56,7 @@ CREATE TABLE public.school_class (
 	id int8 NOT NULL GENERATED ALWAYS AS IDENTITY,
 	number_class varchar(50) NULL,
 	description varchar(500) NULL,
-	school_id int8 NULL,
+	school_id int4 NULL,
 	CONSTRAINT school_class_pkey PRIMARY KEY (id),
 	CONSTRAINT school_clas_fk_school FOREIGN KEY (school_id) REFERENCES public.school(id)
 );

@@ -15,16 +15,26 @@ import ua.gaponov.school.feature.schoolclass.SchoolClassDto;
 import ua.gaponov.school.feature.schoolclass.SchoolClassService;
 
 @RestController
-@RequestMapping(value = "/api/v1/schools")
+@RequestMapping(value = "/api/v1/classes")
 public class ApiSchoolClassController {
 
   @Autowired
   private SchoolClassService schoolClassService;
 
   @GetMapping(value = {""}, produces = {"application/json"})
-  public ResponseEntity<List<SchoolClassDto>> getAllSchool(
-      @RequestParam("search") Optional<String> keywords) {
+  public ResponseEntity<List<SchoolClassDto>> getAllSchoolClasses(
+      @RequestParam("search") Optional<String> keywords,
+      @RequestParam("school_id") Optional<Integer> school_id) {
     String k = (keywords.orElse(""));
+
+    if (school_id.isPresent()) {
+      return ResponseEntity.ok().body(
+          schoolClassService.getAllBySchoolId(k, school_id.get()).stream()
+              .map(SchoolClass::toDto)
+              .sorted(Comparator.comparing(SchoolClassDto::getId))
+              .collect(Collectors.toList()));
+    }
+
     return ResponseEntity.ok().body(
         schoolClassService.getAll(k).stream()
             .map(SchoolClass::toDto)

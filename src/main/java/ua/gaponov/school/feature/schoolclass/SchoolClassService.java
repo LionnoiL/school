@@ -24,6 +24,16 @@ public class SchoolClassService {
     }
   }
 
+  public List<SchoolClass> getAllBySchoolId(String keywords, int school_id)  {
+    if (keywords != null && !keywords.isEmpty()) {
+      return schoolClassRepo.findAllBySchoolIdAndKeywords(school_id, keywords);
+    } else {
+      return schoolClassRepo.findAllBySchoolId(school_id);
+    }
+  }
+
+
+
   public SchoolClass findById(long id) throws NotFoundException {
     Optional<SchoolClass> optional = schoolClassRepo.findById(id);
     if (optional.isEmpty()) {

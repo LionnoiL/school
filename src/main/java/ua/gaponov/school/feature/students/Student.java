@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import lombok.Builder;
 import lombok.Data;
 import ua.gaponov.school.feature.schoolclass.SchoolClass;
@@ -14,6 +15,7 @@ import ua.gaponov.school.feature.schoolclass.SchoolClass;
 @Entity
 @Data
 @Builder
+@Table(name = "students")
 public class Student {
 
   @Id
