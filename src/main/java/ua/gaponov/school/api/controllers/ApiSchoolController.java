@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ua.gaponov.school.school.School;
-import ua.gaponov.school.school.SchoolDto;
-import ua.gaponov.school.school.SchoolService;
+import ua.gaponov.school.feature.school.School;
+import ua.gaponov.school.feature.school.SchoolDto;
+import ua.gaponov.school.feature.school.SchoolService;
 
 @RestController
 @RequestMapping(value = "/api/v1/schools")

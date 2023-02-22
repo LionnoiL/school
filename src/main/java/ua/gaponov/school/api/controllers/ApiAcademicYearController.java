@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ua.gaponov.school.academicyear.AcademicYear;
-import ua.gaponov.school.academicyear.AcademicYearDto;
-import ua.gaponov.school.academicyear.AcademicYearService;
+import ua.gaponov.school.feature.academicyear.AcademicYear;
+import ua.gaponov.school.feature.academicyear.AcademicYearDto;
+import ua.gaponov.school.feature.academicyear.AcademicYearService;
 
 @RestController
 @RequestMapping(value = "/api/v1/year")
