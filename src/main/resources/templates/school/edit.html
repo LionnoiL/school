@@ -62,7 +62,7 @@
 
     <div class="col-md-12">
 
-    <ul class="nav nav-tabs">
+    <ul class="nav nav-tabs" id="myTab">
       <li class="nav-item">
         <a class="nav-link active" data-toggle="tab" href="#main">Основні</a>
       </li>
@@ -203,7 +203,9 @@
   <script>
 
       $(function () {
-
+if (location.hash == '#years') {
+  $('#myTab a[href="#years"]').tab('show');
+}
 
         $('#editform').validate({
           rules: {

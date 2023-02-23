@@ -31,7 +31,7 @@
 
           <input type="hidden" name="class_id" th:value="${schoolClass.id}">
           <div th:switch="${returnPath!=null}">
-            <input type="hidden" name="return_path" th:value="${returnPath}" th:case="true">
+            <input type="hidden" name="return_path" th:value="${returnPath}+'#courses'" th:case="true">
           </div>
 
           <div class="modal-footer justify-content-between">
@@ -93,7 +93,7 @@
 
     <div class="col-md-12">
 
-      <ul class="nav nav-tabs">
+      <ul class="nav nav-tabs" id="myTab" >
         <li class="nav-item">
           <a class="nav-link active" data-toggle="tab" href="#main">Основні</a>
         </li>
@@ -203,7 +203,7 @@
                         <input type="hidden" name="class_id" th:value="${schoolClass.id}">
                         <input type="hidden" name="course_id" th:value="${course.id}">
                         <div th:switch="${returnPath!=null}">
-                          <input type="hidden" name="return_path" th:value="${returnPath}" th:case="true">
+                          <input type="hidden" name="return_path" th:value="${returnPath}+'#courses'" th:case="true">
                         </div>
                         <button type="submit" class="btn btn-danger">
                           <i class="material-icons mr-1">delete</i>
@@ -263,6 +263,10 @@
 
   <script>
                 $(function () {
+
+if (location.hash == '#courses') {
+  $('#myTab a[href="#courses"]').tab('show');
+}
 
                   $('#school_id').select2({
                       ajax: {
