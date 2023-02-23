@@ -55,7 +55,19 @@
     </section>
 
         <div class="col-md-12">
-          <div class="card card-default">
+
+          <ul class="nav nav-tabs">
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#main">Основні</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#courses">Курси</a>
+            </li>
+          </ul>
+
+          <div class="tab-content">
+            <div id="main" class="tab-pane fade show active"></div>
+              <div class="card card-default">
 
             <form action="/school-class/edit" method="post">
 
@@ -120,7 +132,41 @@
             </form>
 
           </div>
+          </div>
+
+          <div id="courses" class="tab-pane fade">
+            <div class="card card-default">
+              <div class="card-body p-0 m-3">
+
+                <div class="col-12 table-responsive">
+                  <table id="datatable" class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                      <th style="width: 20px">#</th>
+                      <th>Назва</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="course: ${courses}">
+                      <th th:text="${course.id}"></th>
+                      <td th:text="${course.name}"></td>
+                    </tr>
+                    </tbody>
+
+                  </table>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+
+
         </div>
+
+
+
+
+
 
   </div>
 

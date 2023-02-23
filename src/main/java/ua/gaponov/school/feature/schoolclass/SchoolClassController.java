@@ -4,6 +4,7 @@ import static ua.gaponov.school.utils.UrlUtils.SCHOOL_CLASS_URL;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import ua.gaponov.school.exception.SchoolClassNotFoundException;
+import ua.gaponov.school.feature.courses.CourseDto;
 import ua.gaponov.school.feature.school.School;
 import ua.gaponov.school.feature.school.SchoolService;
 
@@ -72,9 +74,12 @@ public class SchoolClassController {
 
     try {
       schoolClassDto = SchoolClass.toDto(schoolClassService.findById(id));
+      Set<CourseDto> courses = schoolClassDto.getCourses();
+
       result.setViewName("school-class/edit");
 
       result.addObject("schoolClass", schoolClassDto);
+      result.addObject("courses", courses);
     } catch (NotFoundException e) {
       result = new ModelAndView("school-class/not-found");
     }
