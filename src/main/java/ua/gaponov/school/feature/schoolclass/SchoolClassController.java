@@ -80,6 +80,7 @@ public class SchoolClassController {
 
       result.addObject("schoolClass", schoolClassDto);
       result.addObject("courses", courses);
+      result.addObject("returnPath", "/school-class/"+id);
     } catch (NotFoundException e) {
       result = new ModelAndView("school-class/not-found");
     }

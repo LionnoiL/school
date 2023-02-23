@@ -9,6 +9,41 @@
 <body>
 <div layout:fragment="content" th:remove="tag">
 
+  <div class="modal fade" id="modal-add-course">
+    <div class="modal-dialog modal-lg">
+      <form id="add-course-modal" action="/class-courses/add" method="post">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Додавання курсу в клас</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <div class="form-group">
+                <label>Курс</label>
+                <select name="course_id" id="course_id" class="form-control select2">
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <input type="hidden" name="class_id" th:value="${schoolClass.id}">
+          <div th:switch="${returnPath!=null}">
+            <input type="hidden" name="return_path" th:value="${returnPath}" th:case="true">
+          </div>
+
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Закрити</button>
+            <button type="submit" class="btn btn-success">Зберегти</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
   <div class="modal fade" id="modal-delete">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -26,7 +61,9 @@
           <form action="/school-class/delete" method="post">
             <input type="hidden" name="id" th:value="${schoolClass.id}">
 
-            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Видалити</button>
+            <button type="submit" class="btn btn-primary" data-toggle="modal"
+                    data-target="#modal-add">Видалити
+            </button>
           </form>
         </div>
       </div>
@@ -54,118 +91,141 @@
       </div><!-- /.container-fluid -->
     </section>
 
-        <div class="col-md-12">
+    <div class="col-md-12">
 
-          <ul class="nav nav-tabs">
-            <li class="nav-item">
-              <a class="nav-link active" data-toggle="tab" href="#main">Основні</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" data-toggle="tab" href="#courses">Курси</a>
-            </li>
-          </ul>
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#main">Основні</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#courses">Курси</a>
+        </li>
+      </ul>
 
-          <div class="tab-content">
-            <div id="main" class="tab-pane fade show active"></div>
-              <div class="card card-default">
+      <div class="tab-content">
+        <div id="main" class="tab-pane fade show active">
+          <div class="card card-default">
 
             <form action="/school-class/edit" method="post">
 
-            <div class="card-body p-0 m-3">
-              <div class="bs-stepper-content">
+              <div class="card-body p-0 m-3">
+                <div class="bs-stepper-content">
 
 
-                <div class="form-group">
-                  <label for="name">Назва класу</label>
-                  <input type="text" class="form-control form-control-lg" id="name"
-                         name="name" th:value="${schoolClass.name}">
+                  <div class="form-group">
+                    <label for="name">Назва класу</label>
+                    <input type="text" class="form-control form-control-lg" id="name"
+                           name="name" th:value="${schoolClass.name}">
+                  </div>
+
+
+                  <div class="form-group">
+                    <label for="description">Опис</label>
+                    <input type="text" class="form-control form-control-lg" id="description"
+                           name="description" th:value="${schoolClass.description}">
+                  </div>
+
+
+                  <div class="form-group">
+                    <label>Школа</label>
+                    <select name="school_id" id="school_id" class="form-control select2">
+                      <div th:switch="${schoolClass.school!=null}">
+                        <option selected="selected" th:value="${schoolClass.school.id}"
+                                th:text="${schoolClass.school.name}" th:case="true"></option>
+                      </div>
+                    </select>
+                  </div>
+
+                  <input type="hidden" name="id" th:value="${schoolClass.id}">
+
                 </div>
-
-
-                <div class="form-group">
-                  <label for="description">Опис</label>
-                  <input type="text" class="form-control form-control-lg" id="description"
-                         name="description" th:value="${schoolClass.description}">
-                </div>
-
-
-
-                <div class="form-group">
-                  <label>Школа</label>
-                  <select name="school_id" id="school_id" class="form-control select2">
-                    <div th:switch="${schoolClass.school!=null}">
-                      <option selected="selected" th:value="${schoolClass.school.id}" th:text="${schoolClass.school.name}" th:case="true"></option>
-                    </div>
-                  </select>
-                </div>
-
-              <input type="hidden" name="id" th:value="${schoolClass.id}">
 
               </div>
 
-            </div>
+              <div class="card-footer">
+                <div class="btn-group" role="group">
 
-            <div class="card-footer">
-              <div class="btn-group" role="group">
-
-                <ul class="nav nav-pills mr-1">
-                  <li class="nav-item dropdown">
-                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
-                      Операції <span class="caret"></span>
-                    </a>
-                    <div class="dropdown-menu">
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" tabindex="-1" href="" data-toggle="modal"
-                         data-target="#modal-delete">Видалити</a>
-                    </div>
-                  </li>
-                </ul>
+                  <ul class="nav nav-pills mr-1">
+                    <li class="nav-item dropdown">
+                      <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                        Операції <span class="caret"></span>
+                      </a>
+                      <div class="dropdown-menu">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" tabindex="-1" href="" data-toggle="modal"
+                           data-target="#modal-delete">Видалити</a>
+                      </div>
+                    </li>
+                  </ul>
 
 
-                <a href="/school-class" class="btn btn-default mr-1">Відмова</a>
-                <button type="submit" class="btn btn-success">Зберегти</button>
+                  <a href="/school-class" class="btn btn-default mr-1">Відмова</a>
+                  <button type="submit" class="btn btn-success">Зберегти</button>
+                </div>
               </div>
-            </div>
-
 
 
             </form>
 
           </div>
-          </div>
-
-          <div id="courses" class="tab-pane fade">
-            <div class="card card-default">
-              <div class="card-body p-0 m-3">
-
-                <div class="col-12 table-responsive">
-                  <table id="datatable" class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                      <th style="width: 20px">#</th>
-                      <th>Назва</th>
-                    </thead>
-                    <tbody>
-                    <tr th:each="course: ${courses}">
-                      <th th:text="${course.id}"></th>
-                      <td th:text="${course.name}"></td>
-                    </tr>
-                    </tbody>
-
-                  </table>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-
 
         </div>
 
 
+        <div id="courses" class="tab-pane fade">
+          <div class="card card-default">
+
+            <div class="card-header p-2">
+              <div class="btn-group" role="group">
+                <button type="button" class="btn btn-primary m-1 btn-lg" data-toggle="modal" data-target="#modal-add-course">
+                  Додати курс
+                </button>
+              </div>
+            </div>
 
 
+            <div class="card-body p-0 m-3">
+
+              <div class="col-12 table-responsive">
+                <table id="datatable" class="table table-bordered table-striped">
+                  <thead>
+                  <tr>
+                    <th style="width: 20px">#</th>
+                    <th>Назва</th>
+                    <th style="width: 20px"></th>
+                  </thead>
+                  <tbody>
+                  <tr th:each="course: ${courses}">
+                    <th th:text="${course.id}"></th>
+                    <td th:text="${course.name}"></td>
+                    <td class="text-center">
+                      <form action="/class-courses/delete" method="post">
+                        <input type="hidden" name="class_id" th:value="${schoolClass.id}">
+                        <input type="hidden" name="course_id" th:value="${course.id}">
+                        <div th:switch="${returnPath!=null}">
+                          <input type="hidden" name="return_path" th:value="${returnPath}" th:case="true">
+                        </div>
+                        <button type="submit" class="btn btn-danger">
+                          <i class="material-icons mr-1">delete</i>
+                        </button>
+                      </form>
+                    </td>
+                  </tr>
+
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
 
 
   </div>
@@ -175,7 +235,8 @@
 
 <div layout:fragment="css" th:remove="tag">
   <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet"
+        href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
 
   <!-- Select2 -->
   <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
@@ -224,7 +285,27 @@
                       cache: true
                       }
                     });
-
+$('#course_id').select2({
+                      ajax: {
+                        url: '/api/v1/course',
+                        type: "get",
+                        dataType: 'json',
+                        data: function (params) {
+                          return {
+                            search: params.term
+                          }
+                        },
+                        processResults: function (data) {
+                          $.each(data, function(i, d) {
+                            data[i]['text'] = d.name;
+                          });
+                          return {
+                              results: data
+                          };
+                      },
+                      cache: true
+                      }
+                    });
 
 
                   //Date picker
@@ -292,6 +373,7 @@
                       }
                     });
             })
+
   </script>
 </div>
 

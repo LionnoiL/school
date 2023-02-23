@@ -2,6 +2,7 @@ package ua.gaponov.school.feature.courses;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,16 @@ public class CourseService {
 
   public List<Course> getAll() {
     return courseRepo.findAll();
+  }
+
+  public List<Course> getAll(String keywords) {
+    if (keywords != null && !keywords.isEmpty()) {
+      return courseRepo.findAllByKeywords(keywords);
+    } else {
+      return courseRepo.findAll().stream()
+          .filter(course -> course.isActive())
+          .collect(Collectors.toList());
+    }
   }
 
   public Course findById(int id) throws NotFoundException {
