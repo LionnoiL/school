@@ -102,6 +102,20 @@
             </table>
           </div>
 
+
+<!--          <div class="col-12 table-responsive">-->
+<!--            <table id="datatable2" class="table table-bordered table-striped">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th style="width: 20px">id</th>-->
+<!--                <th>Назва</th>-->
+<!--                <th>Адреса</th>-->
+<!--                <th>Опис</th>-->
+<!--              </thead>-->
+
+<!--            </table>-->
+<!--          </div>-->
+
         </div>
 
       </div>
@@ -145,6 +159,24 @@
   <script>
 
 $(function () {
+
+<!--$('#datatable2').DataTable({-->
+<!--           processing: true,-->
+<!--           serverSide: true,-->
+<!--           ajax: {-->
+<!--               url: '/api/v1/schools',-->
+<!--               type: 'get',-->
+<!--               dataType: 'json',-->
+<!--               dataSrc: ""-->
+<!--           },-->
+<!--           columns: [-->
+<!--               { data: "id", name: "id" },-->
+<!--               { data: "name", name: "Назва" },-->
+<!--           ]-->
+
+<!--        });-->
+
+
                 $("#datatable").DataTable({
                   language: {
                       url:  '/localisation/datatable-uk.json'
