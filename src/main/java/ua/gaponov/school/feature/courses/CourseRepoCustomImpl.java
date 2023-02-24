@@ -14,7 +14,7 @@ public class CourseRepoCustomImpl implements CourseRepoCustom {
   public List<Course> findAllByKeywords(String keywords) {
     List<Course> result;
     Query q = entityManager.createQuery(
-        "SELECT s FROM Course s WHERE s.active and lower(s.name) LIKE lower(?1)",
+        "SELECT s FROM Course s WHERE s.active = true and lower(s.name) LIKE lower(?1)",
         Course.class);
     q.setParameter(1, "%" + keywords + "%");
     result = q.getResultList();
