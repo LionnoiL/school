@@ -27,7 +27,7 @@ public class StudentService {
   public Student findById(int id) throws NotFoundException {
     Optional<Student> optional = studentRepo.findById(id);
     if (optional.isEmpty()) {
-      throw new NotFoundException("Student class not present");
+      throw new NotFoundException("Student not present");
     }
 
     return optional.get();

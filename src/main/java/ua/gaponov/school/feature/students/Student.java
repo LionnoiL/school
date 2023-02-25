@@ -8,13 +8,17 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.gaponov.school.feature.schoolclass.SchoolClass;
 
 @Entity
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "students")
 public class Student {
 
@@ -28,16 +32,6 @@ public class Student {
   @ManyToOne
   @JoinColumn(name = "school_class_id")
   private SchoolClass schoolClass;
-
-  public Student(int id, String firstName, String lastName, SchoolClass schoolClass) {
-    this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.schoolClass = schoolClass;
-  }
-
-  public Student() {
-  }
 
   public static StudentDto toDto(Student student) {
     return StudentDto.builder()
