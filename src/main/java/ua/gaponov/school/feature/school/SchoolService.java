@@ -24,12 +24,11 @@ public class SchoolService {
     }
   }
 
-  public School findById(int id) throws NotFoundException {
+  public School findById(long id) throws NotFoundException {
     Optional<School> optional = schoolRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("School not present");
     }
-
     return optional.get();
   }
 

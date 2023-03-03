@@ -8,7 +8,7 @@ import ua.gaponov.school.enums.ERole;
 @Builder
 public class UserDto {
 
-  private int id;
+  private long id;
   private String userName;
   private ERole role;
   private boolean enabled;

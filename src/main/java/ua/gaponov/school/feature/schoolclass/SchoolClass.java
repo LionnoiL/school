@@ -1,42 +1,31 @@
 package ua.gaponov.school.feature.schoolclass;
 
-import java.io.Serializable;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.gaponov.school.feature.courses.Course;
 import ua.gaponov.school.feature.school.School;
+import ua.gaponov.school.model.NamedEntity;
 
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SchoolClass {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
-  @Column(name = "number_class")
-  private String name;
+public class SchoolClass extends NamedEntity {
+
   @Column(name = "description")
   private String description;
   @ManyToOne
   @JoinColumn(name = "school_id")
   private School school;
-
   @JoinTable(
       name = "class_courses",
       joinColumns = @JoinColumn(name = "class_id"),
@@ -58,16 +47,27 @@ public class SchoolClass {
         .build();
   }
 
-  public static SchoolClass fromDto(SchoolClassDto schoolClassDto) {
-    return SchoolClass.builder()
-        .id(schoolClassDto.getId())
-        .name(schoolClassDto.getName())
-        .description(schoolClassDto.getDescription())
-        .school(School.fromDto(schoolClassDto.getSchool()))
-        .courses(schoolClassDto.getCourses()
-            .stream()
-            .map(Course::fromDto)
-            .collect(Collectors.toSet()))
-        .build();
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public School getSchool() {
+    return school;
+  }
+
+  public void setSchool(School school) {
+    this.school = school;
+  }
+
+  public Set<Course> getCourses() {
+    return courses;
+  }
+
+  public void setCourses(Set<Course> courses) {
+    this.courses = courses;
   }
 }

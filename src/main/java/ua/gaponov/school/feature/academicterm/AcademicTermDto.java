@@ -8,7 +8,7 @@ import ua.gaponov.school.feature.academicyear.AcademicYearDto;
 @Builder
 public class AcademicTermDto {
 
-  private int id;
+  private long id;
   private String name;
   private String startDate;
   private String endDate;

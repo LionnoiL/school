@@ -24,11 +24,11 @@ public class AcademicYearService {
     }
   }
 
-  public List<AcademicYear> getAllBySchool(int id) {
+  public List<AcademicYear> getAllBySchool(long id) {
     return academicYearRepo.findBySchoolId(id);
   }
 
-  public AcademicYear findById(int id) throws NotFoundException {
+  public AcademicYear findById(long id) throws NotFoundException {
     Optional<AcademicYear> optional = academicYearRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Academic year not present");

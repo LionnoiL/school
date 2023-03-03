@@ -43,18 +43,16 @@ public class SchoolClassController {
   @PostMapping("/add")
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "description") String description,
-      @RequestParam(value = "school_id") int schoolId,
+      @RequestParam(value = "school_id") long schoolId,
       @RequestParam(value = "return_path", required = false) String returnPath) {
 
-    SchoolClass schoolClass = null;
-    School school = null;
+    SchoolClass schoolClass = new SchoolClass();
+    School school;
     try {
       school = schoolService.findById(schoolId);
-      schoolClass = SchoolClass.builder()
-          .name(name)
-          .description(description)
-          .school(school)
-          .build();
+      schoolClass.setName(name);
+      schoolClass.setDescription(description);
+      schoolClass.setSchool(school);
       schoolClassService.save(schoolClass);
     } catch (NotFoundException e) {
       throw new SchoolClassNotFoundException("School class not found with id: " + schoolId);
@@ -68,7 +66,7 @@ public class SchoolClassController {
   }
 
   @GetMapping("/{id}")
-  public ModelAndView edit(@PathVariable(value = "id") int id) {
+  public ModelAndView edit(@PathVariable(value = "id") long id) {
     ModelAndView result = new ModelAndView();
     SchoolClassDto schoolClassDto = null;
 
@@ -89,10 +87,10 @@ public class SchoolClassController {
   }
 
   @PostMapping("/edit")
-  public RedirectView editSchoolClass(@RequestParam(value = "id") int id,
+  public RedirectView editSchoolClass(@RequestParam(value = "id") long id,
       @RequestParam(value = "name") String name,
       @RequestParam(value = "description") String description,
-      @RequestParam(value = "school_id") int schoolId) {
+      @RequestParam(value = "school_id") long schoolId) {
 
     School school = null;
     try {
@@ -112,7 +110,7 @@ public class SchoolClassController {
   }
 
   @PostMapping("/delete")
-  public RedirectView delete(@RequestParam(value = "id") int id) {
+  public RedirectView delete(@RequestParam(value = "id") long id) {
     SchoolClass schoolClass = null;
     try {
       schoolClass = schoolClassService.findById(id);

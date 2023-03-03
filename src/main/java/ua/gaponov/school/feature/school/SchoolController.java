@@ -43,19 +43,17 @@ public class SchoolController {
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "address") String address,
       @RequestParam(value = "description") String description) {
-    School school = null;
-    school = School.builder()
-        .address(address)
-        .name(name)
-        .description(description)
-        .build();
-    schoolService.save(school);
+    School school = new School();
+    school.setAddress(address);
+    school.setName(name);
+    school.setDescription(description);
 
+    schoolService.save(school);
     return new RedirectView(SCHOOL_URL);
   }
 
   @GetMapping("/{id}")
-  public ModelAndView edit(@PathVariable(value = "id") int id) {
+  public ModelAndView edit(@PathVariable(value = "id") long id) {
     ModelAndView result = new ModelAndView();
     SchoolDto schoolDto = null;
 
@@ -79,7 +77,7 @@ public class SchoolController {
   }
 
   @PostMapping("/edit")
-  public RedirectView editSchool(@RequestParam(value = "id") int id,
+  public RedirectView editSchool(@RequestParam(value = "id") long id,
       @RequestParam(value = "name") String name,
       @RequestParam(value = "address") String address,
       @RequestParam(value = "description") String description) {
@@ -99,7 +97,7 @@ public class SchoolController {
   }
 
   @PostMapping("/delete")
-  public RedirectView delete(@RequestParam(value = "id") int id) {
+  public RedirectView delete(@RequestParam(value = "id") long id) {
     School school = null;
     try {
       school = schoolService.findById(id);

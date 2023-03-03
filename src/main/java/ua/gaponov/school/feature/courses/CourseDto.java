@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class CourseDto {
 
-  private int id;
+  private long id;
   private String name;
   private boolean active;
   private String description;

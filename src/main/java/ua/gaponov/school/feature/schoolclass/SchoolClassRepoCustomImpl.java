@@ -22,7 +22,7 @@ public class SchoolClassRepoCustomImpl implements SchoolClassRepoCustom {
   }
 
   @Override
-  public List<SchoolClass> findAllBySchoolId(int id) {
+  public List<SchoolClass> findAllBySchoolId(long id) {
     List<SchoolClass> result;
     Query q = entityManager.createQuery(
         "SELECT s FROM SchoolClass s WHERE s.school.id =?1",
@@ -33,7 +33,7 @@ public class SchoolClassRepoCustomImpl implements SchoolClassRepoCustom {
   }
 
   @Override
-  public List<SchoolClass> findAllBySchoolIdAndKeywords(int id, String keywords) {
+  public List<SchoolClass> findAllBySchoolIdAndKeywords(long id, String keywords) {
     List<SchoolClass> result;
     Query q = entityManager.createQuery(
         "SELECT s FROM SchoolClass s WHERE s.school.id =?1 and lower(s.name) LIKE lower(?2)",

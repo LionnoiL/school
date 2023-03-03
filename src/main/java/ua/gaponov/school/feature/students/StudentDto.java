@@ -8,7 +8,7 @@ import ua.gaponov.school.feature.schoolclass.SchoolClassDto;
 @Builder
 public class StudentDto {
 
-  private int id;
+  private long id;
   private String firstName;
   private String lastName;
   private SchoolClassDto schoolClass;

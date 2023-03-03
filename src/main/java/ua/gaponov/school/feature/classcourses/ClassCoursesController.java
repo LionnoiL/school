@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import ua.gaponov.school.exception.CourseNotFoundException;
 import ua.gaponov.school.exception.SchoolClassNotFoundException;
-import ua.gaponov.school.exception.SchoolNotFoundException;
 import ua.gaponov.school.feature.courses.Course;
 import ua.gaponov.school.feature.courses.CourseService;
 import ua.gaponov.school.feature.schoolclass.SchoolClass;
@@ -28,8 +27,8 @@ public class ClassCoursesController {
   private final CourseService courseService;
 
   @PostMapping("/add")
-  public RedirectView add(@RequestParam(value = "course_id") int courseId,
-      @RequestParam(value = "class_id") int classId,
+  public RedirectView add(@RequestParam(value = "course_id") long courseId,
+      @RequestParam(value = "class_id") long classId,
       @RequestParam(value = "return_path", required = false) String returnPath) {
 
     SchoolClass schoolClass;
@@ -47,8 +46,8 @@ public class ClassCoursesController {
     }
 
     Set<Course> courses = schoolClass.getCourses();
-    long count = courses.stream().filter(course::equals).count();
-    if (count==0){
+    long count = courses.stream().filter(o -> course.equals(o)).count();
+    if (count == 0) {
       courses.add(course);
       schoolClass.setCourses(courses);
       schoolClassService.save(schoolClass);
@@ -62,9 +61,9 @@ public class ClassCoursesController {
   }
 
   @PostMapping("/delete")
-  public RedirectView delete(@RequestParam(value = "course_id") int courseId,
-      @RequestParam(value = "class_id") int classId,
-      @RequestParam(value = "return_path", required = false) String returnPath ){
+  public RedirectView delete(@RequestParam(value = "course_id") long courseId,
+      @RequestParam(value = "class_id") long classId,
+      @RequestParam(value = "return_path", required = false) String returnPath) {
 
     SchoolClass schoolClass;
     Course course;

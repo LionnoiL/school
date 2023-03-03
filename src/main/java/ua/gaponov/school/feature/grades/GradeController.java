@@ -38,18 +38,15 @@ public class GradeController {
   @PostMapping("/add")
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "rate") double rate) {
-    Grade grade = null;
-    grade = Grade.builder()
-        .name(name)
-        .rate(rate)
-        .build();
+    Grade grade = new Grade();
+    grade.setName(name);
+    grade.setRate(rate);
     gradeService.save(grade);
-
     return new RedirectView(GRADES_URL);
   }
 
   @GetMapping("/{id}")
-  public ModelAndView edit(@PathVariable(value = "id") int id) {
+  public ModelAndView edit(@PathVariable(value = "id") long id) {
     ModelAndView result = new ModelAndView();
     GradeDto gradeDto = null;
 
@@ -66,7 +63,7 @@ public class GradeController {
   }
 
   @PostMapping("/edit")
-  public RedirectView editSchool(@RequestParam(value = "id") int id,
+  public RedirectView editSchool(@RequestParam(value = "id") long id,
       @RequestParam(value = "name") String name,
       @RequestParam(value = "rate") double rate) {
     Grade grade = null;
@@ -84,7 +81,7 @@ public class GradeController {
   }
 
   @PostMapping("/delete")
-  public RedirectView delete(@RequestParam(value = "id") int id) {
+  public RedirectView delete(@RequestParam(value = "id") long id) {
     Grade grade = null;
     try {
       grade = gradeService.findById(id);

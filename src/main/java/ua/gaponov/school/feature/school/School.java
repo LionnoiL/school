@@ -2,39 +2,22 @@ package ua.gaponov.school.feature.school;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import ua.gaponov.school.model.NamedEntity;
 
 @Entity
-@Data
 @Builder
-public class School {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-
-  @Column(name = "title", nullable = false)
-  private String name;
+@NoArgsConstructor
+@AllArgsConstructor
+public class School extends NamedEntity {
 
   @Column(name = "description")
   private String description;
 
   @Column(name = "address")
   private String address;
-
-  public School(int id, String name, String description, String address) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.address = address;
-  }
-
-  public School() {
-  }
 
   public static SchoolDto toDto(School school) {
     SchoolDto res = SchoolDto.builder()
@@ -47,12 +30,28 @@ public class School {
   }
 
   public static School fromDto(SchoolDto schoolDto) {
-    School school = School.builder()
-        .name(schoolDto.getName())
-        .address(schoolDto.getAddress())
-        .description(schoolDto.getDescription())
-        .id(schoolDto.getId())
-        .build();
+    School school = new School();
+    school.setId(schoolDto.getId());
+    school.setName(schoolDto.getName());
+    school.setAddress(schoolDto.getAddress());
+    school.setAddress(schoolDto.getAddress());
+    school.setDescription(schoolDto.getDescription());
     return school;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
   }
 }

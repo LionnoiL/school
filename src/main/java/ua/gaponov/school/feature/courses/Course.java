@@ -1,41 +1,25 @@
 package ua.gaponov.school.feature.courses;
 
-import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import ua.gaponov.school.model.NamedEntity;
 
 @Entity
-@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "courses")
-public class Course {
+public class Course extends NamedEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-  @Column(name = "name", nullable = false)
-  private String name;
   @Column(name = "active")
   private boolean active;
 
   @Column(name = "description")
   private String description;
-
-  public Course() {
-  }
-
-  public Course(int id, String name, boolean active, String description) {
-    this.id = id;
-    this.name = name;
-    this.active = active;
-    this.description = description;
-  }
 
   public static CourseDto toDto(Course course) {
     return CourseDto.builder()
@@ -46,12 +30,19 @@ public class Course {
         .build();
   }
 
-  public static Course fromDto(CourseDto courseDto) {
-    return Course.builder()
-        .id(courseDto.getId())
-        .name(courseDto.getName())
-        .description(courseDto.getDescription())
-        .active(courseDto.isActive())
-        .build();
+  public boolean isActive() {
+    return active;
+  }
+
+  public void setActive(boolean active) {
+    this.active = active;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }

@@ -16,7 +16,7 @@ public class GradeService {
     return gradeRepo.findAll();
   }
 
-  public Grade findById(int id) throws NotFoundException {
+  public Grade findById(long id) throws NotFoundException {
     Optional<Grade> optional = gradeRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Grades not present");

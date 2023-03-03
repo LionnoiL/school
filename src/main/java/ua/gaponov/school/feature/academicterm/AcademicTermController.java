@@ -47,19 +47,17 @@ public class AcademicTermController {
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "startDate") String startDate,
       @RequestParam(value = "endDate") String endDate,
-      @RequestParam(value = "academic_year_id") int yearId) {
+      @RequestParam(value = "academic_year_id") long yearId) {
 
-    AcademicTerm academicTerm = null;
+    AcademicTerm term = new AcademicTerm();
     AcademicYear year = null;
     try {
       year = academicYearService.findById(yearId);
-      academicTerm = AcademicTerm.builder()
-          .name(name)
-          .startDate(DateUtils.getLocalDateFromString(startDate))
-          .endDate(DateUtils.getLocalDateFromString(endDate))
-          .academicYear(year)
-          .build();
-      academicTermService.save(academicTerm);
+      term.setName(name);
+      term.setStartDate(DateUtils.getLocalDateFromString(startDate));
+      term.setEndDate(DateUtils.getLocalDateFromString(endDate));
+      term.setAcademicYear(year);
+      academicTermService.save(term);
     } catch (NotFoundException e) {
       throw new SchoolNotFoundException("Academic year not found with id: " + yearId);
     }
@@ -68,7 +66,7 @@ public class AcademicTermController {
   }
 
   @GetMapping("/{id}")
-  public ModelAndView edit(@PathVariable(value = "id") int id) {
+  public ModelAndView edit(@PathVariable(value = "id") long id) {
     ModelAndView result = new ModelAndView();
     AcademicTermDto academicTermDto = null;
 
@@ -78,7 +76,7 @@ public class AcademicTermController {
       result.setViewName("academic-term/edit");
       List<AcademicYearDto> years = academicYearService.getAll().stream()
           .map(AcademicYear::toDto)
-          .sorted(Comparator.comparing(yearDto -> (Integer) yearDto.getId()))
+          .sorted(Comparator.comparing(AcademicYearDto::getId))
           .collect(Collectors.toList());
 
       result.addObject("term", academicTermDto);
@@ -91,11 +89,11 @@ public class AcademicTermController {
   }
 
   @PostMapping("/edit")
-  public RedirectView editYear(@RequestParam(value = "id") int id,
+  public RedirectView editYear(@RequestParam(value = "id") long id,
       @RequestParam(value = "name") String name,
       @RequestParam(value = "startDate") String startDate,
       @RequestParam(value = "endDate") String endDate,
-      @RequestParam(value = "academic_year_id") int yearId) {
+      @RequestParam(value = "academic_year_id") long yearId) {
 
     AcademicYear year = null;
     try {
@@ -117,7 +115,7 @@ public class AcademicTermController {
   }
 
   @PostMapping("/delete")
-  public RedirectView delete(@RequestParam(value = "id") int id) {
+  public RedirectView delete(@RequestParam(value = "id") long id) {
     AcademicTerm academicTermDto = null;
     try {
       academicTermDto = academicTermService.findById(id);

@@ -2,36 +2,23 @@ package ua.gaponov.school.feature.grades;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
+import ua.gaponov.school.model.NamedEntity;
 
 @Entity
-@Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "grades")
-public class Grade {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-  @Column(name = "name", nullable = false)
-  private String name;
+public class Grade extends NamedEntity {
+
   @Column(name = "rate")
   private double rate;
 
-  public Grade() {
-  }
-
-  public Grade(int id, String name, double rate) {
-    this.id = id;
-    this.name = name;
-    this.rate = rate;
-  }
-
-  public static GradeDto toDto(Grade grade){
+  public static GradeDto toDto(Grade grade) {
     return GradeDto.builder()
         .id(grade.getId())
         .name(grade.getName())
@@ -39,11 +26,11 @@ public class Grade {
         .build();
   }
 
-  public static Grade fromDto(GradeDto gradeDto){
-    return Grade.builder()
-        .id(gradeDto.getId())
-        .name(gradeDto.getName())
-        .rate(gradeDto.getRate())
-        .build();
+  public double getRate() {
+    return rate;
+  }
+
+  public void setRate(double rate) {
+    this.rate = rate;
   }
 }

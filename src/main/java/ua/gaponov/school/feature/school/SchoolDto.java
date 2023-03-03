@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class SchoolDto {
 
-  private int id;
+  private long id;
   private String name;
   private String description;
   private String address;

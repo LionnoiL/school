@@ -39,19 +39,16 @@ public class CourseController {
   public RedirectView add(@RequestParam(value = "name") String name,
       @RequestParam(value = "description") String description,
       @RequestParam(value = "enabled", required = false) String enabled) {
-    Course course = null;
-    course = Course.builder()
-        .name(name)
-        .description(description)
-        .active(enabled != null)
-        .build();
+    Course course = new Course();
+    course.setName(name);
+    course.setDescription(description);
+    course.setActive(enabled != null);
     courseService.save(course);
-
     return new RedirectView(COURSE_URL);
   }
 
   @GetMapping("/{id}")
-  public ModelAndView edit(@PathVariable(value = "id") int id) {
+  public ModelAndView edit(@PathVariable(value = "id") long id) {
     ModelAndView result = new ModelAndView();
     CourseDto courseDto = null;
 
@@ -68,7 +65,7 @@ public class CourseController {
   }
 
   @PostMapping("/edit")
-  public RedirectView editSchool(@RequestParam(value = "id") int id,
+  public RedirectView editSchool(@RequestParam(value = "id") long id,
       @RequestParam(value = "name") String name,
       @RequestParam(value = "description") String description,
       @RequestParam(value = "enabled", required = false) String enabled) {
@@ -88,7 +85,7 @@ public class CourseController {
   }
 
   @PostMapping("/delete")
-  public RedirectView delete(@RequestParam(value = "id") int id) {
+  public RedirectView delete(@RequestParam(value = "id") long id) {
     Course course = null;
     try {
       course = courseService.findById(id);

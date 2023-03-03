@@ -3,27 +3,20 @@ package ua.gaponov.school.feature.academicterm;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.gaponov.school.feature.academicyear.AcademicYear;
+import ua.gaponov.school.model.NamedEntity;
 import ua.gaponov.school.utils.DateUtils;
 
 @Entity
-@Data
 @Builder
-public class AcademicTerm {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-
-  @Column(name = "term_name", nullable = false)
-  private String name;
+@AllArgsConstructor
+@NoArgsConstructor
+public class AcademicTerm extends NamedEntity {
 
   @Column(name = "start_term", nullable = false)
   private LocalDate startDate;
@@ -34,19 +27,6 @@ public class AcademicTerm {
   @ManyToOne
   @JoinColumn(name = "academic_year_id")
   private AcademicYear academicYear;
-
-  public AcademicTerm() {
-
-  }
-
-  public AcademicTerm(int id, String name, LocalDate startDate, LocalDate endDate,
-      AcademicYear academicYear) {
-    this.id = id;
-    this.name = name;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.academicYear = academicYear;
-  }
 
   public static AcademicTermDto toDto(AcademicTerm academicTerm) {
     return AcademicTermDto.builder()
@@ -59,12 +39,36 @@ public class AcademicTerm {
   }
 
   public static AcademicTerm fromDto(AcademicTermDto academicTermDto) {
-    return AcademicTerm.builder()
-        .id(academicTermDto.getId())
-        .name(academicTermDto.getName())
-        .startDate(DateUtils.getLocalDateFromString(academicTermDto.getStartDate()))
-        .endDate(DateUtils.getLocalDateFromString(academicTermDto.getEndDate()))
-        .academicYear(AcademicYear.fromDto(academicTermDto.getAcademicYear()))
-        .build();
+    AcademicTerm term = new AcademicTerm();
+    term.setId(academicTermDto.getId());
+    term.setName(academicTermDto.getName());
+    term.setStartDate(DateUtils.getLocalDateFromString(academicTermDto.getStartDate()));
+    term.setEndDate(DateUtils.getLocalDateFromString(academicTermDto.getEndDate()));
+    term.setAcademicYear(AcademicYear.fromDto(academicTermDto.getAcademicYear()));
+    return term;
+  }
+
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
+  public AcademicYear getAcademicYear() {
+    return academicYear;
+  }
+
+  public void setAcademicYear(AcademicYear academicYear) {
+    this.academicYear = academicYear;
   }
 }

@@ -16,7 +16,7 @@ public class AcademicTermService {
     return academicTermRepo.findAll();
   }
 
-  public AcademicTerm findById(int id) throws NotFoundException {
+  public AcademicTerm findById(long id) throws NotFoundException {
     Optional<AcademicTerm> optional = academicTermRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Academic term not present");

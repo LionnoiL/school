@@ -2,29 +2,22 @@ package ua.gaponov.school.feature.students;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import ua.gaponov.school.feature.schoolclass.SchoolClass;
+import ua.gaponov.school.model.BaseEntity;
 
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "students")
-public class Student {
+public class Student extends BaseEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
   @Column(name = "first_name", nullable = false)
   private String firstName;
   @Column(name = "last_name", nullable = false)
@@ -42,12 +35,27 @@ public class Student {
         .build();
   }
 
-  public static Student fromDto(StudentDto studentDto) {
-    return Student.builder()
-        .id(studentDto.getId())
-        .firstName(studentDto.getFirstName())
-        .lastName(studentDto.getLastName())
-        .schoolClass(SchoolClass.fromDto(studentDto.getSchoolClass()))
-        .build();
+  public String getFirstName() {
+    return firstName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public String getLastName() {
+    return lastName;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public SchoolClass getSchoolClass() {
+    return schoolClass;
+  }
+
+  public void setSchoolClass(SchoolClass schoolClass) {
+    this.schoolClass = schoolClass;
   }
 }

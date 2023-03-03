@@ -27,7 +27,7 @@ public class CourseService {
     }
   }
 
-  public Course findById(int id) throws NotFoundException {
+  public Course findById(long id) throws NotFoundException {
     Optional<Course> optional = courseRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("Course not present");

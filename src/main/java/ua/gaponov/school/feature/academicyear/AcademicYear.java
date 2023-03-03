@@ -3,27 +3,20 @@ package ua.gaponov.school.feature.academicyear;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.gaponov.school.feature.school.School;
+import ua.gaponov.school.model.NamedEntity;
 import ua.gaponov.school.utils.DateUtils;
 
 @Entity
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class AcademicYear {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
-
-  @Column(name = "academic_year_name", nullable = false)
-  private String name;
+public class AcademicYear extends NamedEntity {
 
   @Column(name = "start_year", nullable = false)
   private LocalDate startDate;
@@ -34,18 +27,6 @@ public class AcademicYear {
   @ManyToOne
   @JoinColumn(name = "school_id")
   private School school;
-
-  public AcademicYear() {
-
-  }
-
-  public AcademicYear(int id, String name, LocalDate startDate, LocalDate endDate, School school) {
-    this.id = id;
-    this.name = name;
-    this.startDate = startDate;
-    this.endDate = endDate;
-    this.school = school;
-  }
 
   public static AcademicYearDto toDto(AcademicYear year) {
     return AcademicYearDto.builder()
@@ -58,12 +39,36 @@ public class AcademicYear {
   }
 
   public static AcademicYear fromDto(AcademicYearDto yearDto) {
-    return AcademicYear.builder()
-        .id(yearDto.getId())
-        .name(yearDto.getName())
-        .startDate(DateUtils.getLocalDateFromString(yearDto.getStartDate()))
-        .endDate(DateUtils.getLocalDateFromString(yearDto.getEndDate()))
-        .school(School.fromDto(yearDto.getSchool()))
-        .build();
+    AcademicYear year = new AcademicYear();
+    year.setId(yearDto.getId());
+    year.setName(yearDto.getName());
+    year.setStartDate(DateUtils.getLocalDateFromString(yearDto.getStartDate()));
+    year.setEndDate(DateUtils.getLocalDateFromString(yearDto.getEndDate()));
+    year.setSchool(School.fromDto(yearDto.getSchool()));
+    return year;
+  }
+
+  public LocalDate getStartDate() {
+    return startDate;
+  }
+
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
+  }
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
+  public School getSchool() {
+    return school;
+  }
+
+  public void setSchool(School school) {
+    this.school = school;
   }
 }

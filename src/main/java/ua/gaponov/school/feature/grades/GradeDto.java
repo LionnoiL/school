@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class GradeDto {
 
-  private int id;
+  private long id;
   private String name;
   private double rate;
 }
