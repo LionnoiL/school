@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{fragments/layout}">
+<head>
+  <title>Редагування користувача</title>
+</head>
+
+<body>
+<div layout:fragment="content" th:remove="tag">
+
+  <div class="modal fade" id="modal-delete">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Видалення користувача</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p th:text="'Видалити користувача '+${user.userName}+'?'"></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Відмова</button>
+          <form action="/users/delete" method="post">
+            <input type="hidden" name="id" th:value="${user.id}">
+
+            <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-add">Видалити</button>
+          </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <div class="content-wrapper">
+
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-6">
+            <h1>Редагування користувача</h1>
+          </div>
+
+          <div class="col-sm-6">
+            <ol class="float-right">
+
+            </ol>
+          </div>
+
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+        <div class="col-md-12">
+          <div class="card card-default">
+
+            <form action="/users/edit" method="post">
+
+            <div class="card-body p-0 m-3">
+              <div class="bs-stepper-content">
+
+
+
+                <div class="form-group">
+                  <label class="form-check-label" for="userName">Ім'я</label>
+                  <input class="form-control" id="userName" name="userName" readonly
+                         onfocus="this.removeAttribute('readonly')" th:value="${user.userName}">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-check-label" for="userRole">Роль</label>
+                  <select  class="form-control" id="userRole" name="userRole">
+                    <option th:selected="${'Адміністратор'.equals(userRole)}">Адміністратор</option>
+                    <option th:selected="${'Користувач'.equals(userRole)}">Користувач</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Пароль</label>
+                  <input type="password" class="form-control" id="password" name="password" readonly
+                         onfocus="this.removeAttribute('readonly')">
+                  <small id="passwordHelp" class="form-text text-muted">Вкажіть новий пароль, якщо його потрібно змінити</small>
+                </div>
+                <div class="form-group form-check">
+                  <input type="checkbox" class="form-check-input" id="enabled" name="enabled" th:checked="${user.enabled}">
+                  <label class="form-check-label" for="enabled">Активний</label>
+                </div>
+
+
+
+
+
+              <input type="hidden" name="id" th:value="${user.id}">
+
+              </div>
+
+            </div>
+
+            <div class="card-footer">
+              <div class="btn-group" role="group">
+
+                <ul class="nav nav-pills mr-1">
+                  <li class="nav-item dropdown">
+                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" href="#">
+                      Операції <span class="caret"></span>
+                    </a>
+                    <div class="dropdown-menu">
+                      <div class="dropdown-divider"></div>
+                      <a class="dropdown-item" tabindex="-1" href="" data-toggle="modal"
+                         data-target="#modal-delete">Видалити</a>
+                    </div>
+                  </li>
+                </ul>
+
+
+                <a href="/users" class="btn btn-default mr-1">Відмова</a>
+                <button type="submit" class="btn btn-success">Зберегти</button>
+              </div>
+            </div>
+
+
+
+            </form>
+
+          </div>
+        </div>
+
+  </div>
+
+
+</div>
+
+<div layout:fragment="css" th:remove="tag">
+
+
+</div>
+
+<div layout:fragment="script" th:remove="tag">
+
+  <script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+  <script src="plugins/jquery-validation/additional-methods.min.js"></script>
+
+  <script>
+                $(function () {
+
+
+                  $('#editform').validate({
+                          rules: {
+                        userName: {
+                          required: true,
+                          minlength: 5
+                        },
+                        password: {
+                          required: true,
+                          minlength: 5
+                        },
+                      },
+                      messages: {
+                        userName: {
+                          required: "Введіть ім'я користувача",
+                          minlength: "Мінімальна довжина назви 5 символів"
+                        },
+                        password: {
+                          required: "Введіть пароль",
+                          minlength: "Мінімальна довжина пароля 5 символів"
+                        },
+                      },
+                      errorElement: 'span',
+                      errorPlacement: function (error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
+                      },
+                      highlight: function (element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
+                      },
+                      unhighlight: function (element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                      }
+                    });
+            })
+  </script>
+</div>
+
+
+</body>
+</html>

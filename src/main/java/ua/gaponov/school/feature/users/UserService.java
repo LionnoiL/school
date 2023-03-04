@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,11 +19,17 @@ public class UserService implements UserDetailsService {
 
   private final UserRepo userRepo;
 
+  public static User build(User user) {
+    List<GrantedAuthority> authorities = List.of(
+        new SimpleGrantedAuthority(user.getRole().toString()));
+    return new User(user.getId(), user.getUsername(), user.getPassword(), authorities);
+  }
+
   public List<User> getAll() {
     return userRepo.findAll();
   }
 
-  public User findById(int id) throws NotFoundException {
+  public User findById(long id) throws NotFoundException {
     Optional<User> optional = userRepo.findById(id);
     if (optional.isEmpty()) {
       throw new NotFoundException("User not present");
@@ -42,10 +50,5 @@ public class UserService implements UserDetailsService {
     User user = userRepo.findUserByUserName(username).orElseThrow(
         () -> new UsernameNotFoundException("User not found for username:" + username));
     return build(user);
-  }
-
-  public static User build(User user){
-    List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().toString()));
-    return new User(user.getId(), user.getUsername(), user.getPassword(), authorities);
   }
 }

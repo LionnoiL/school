@@ -100,7 +100,7 @@ public class StudentController {
       student.setLastName(lastName);
       studentService.save(student);
     } catch (NotFoundException e) {
-      throw new SchoolClassNotFoundException("Student found with id: " + id);
+      throw new SchoolClassNotFoundException("Student not found with id: " + id);
     }
 
     return new RedirectView(STUDENT_URL);

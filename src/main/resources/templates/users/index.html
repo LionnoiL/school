@@ -95,6 +95,7 @@
                 <th style="width: 20px">#</th>
                 <th>Ім'я користувача</th>
                 <th>Роль</th>
+                <th style="width: 20px">Активний</th>
               </thead>
               <tbody>
               <tr th:each="user: ${users}">
@@ -103,6 +104,12 @@
                   <a th:href="@{'/users/' + ${user.id}}" th:text="${user.userName}"></a>
                 </td>
                 <td th:text="${user.role.getFriendlyName()}"></td>
+                <td class="text-center">
+                  <div th:switch="${user.enabled}">
+                    <span class="badge bg-success" th:case="true">Так</span>
+                    <span class="badge bg-danger" th:case="false">Ні</span>
+                  </div>
+                </td>
               </tr>
               </tbody>
 
@@ -118,13 +125,6 @@
 </div>
 
 <div layout:fragment="css" th:remove="tag">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-
-  <!-- Select2 -->
-  <link rel="stylesheet" href="plugins/select2/css/select2.min.css">
-  <link rel="stylesheet" href="plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
-
   <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
@@ -132,8 +132,6 @@
 
 
 <div layout:fragment="script" th:remove="tag">
-  <!-- Select2 -->
-  <script src="plugins/select2/js/select2.full.min.js"></script>
 
   <script src="plugins/jquery-validation/jquery.validate.min.js"></script>
   <script src="plugins/jquery-validation/additional-methods.min.js"></script>
@@ -154,62 +152,6 @@
   <script>
 
 $(function () {
-
-$('#school_id').select2({
-                      ajax: {
-                        url: '/api/v1/schools',
-                        type: "get",
-                        dataType: 'json',
-                        data: function (params) {
-                          return {
-                            search: params.term
-                          }
-                        },
-                        processResults: function (data) {
-                          $.each(data, function(i, d) {
-                            data[i]['text'] = d.name;
-                          });
-                          return {
-                              results: data
-                          };
-                      },
-                      cache: true
-                      }
-                    });
-
-
-
-
-$('#class_id').select2({
-                      ajax: {
-                        url: '/api/v1/classes',
-                        type: "get",
-                        dataType: 'json',
-                        data: function (params) {
-                          var school_id = $('#school_id').val();
-                          return {
-                            search: params.term,
-                            school_id: school_id
-                          }
-                        },
-                       processResults: function (data) {
-                           return {
-                              results: $.map(data, function(item) {
-                                return {
-                                  text: item.name,
-                                  id: item.id
-                                }
-                              })
-                            };
-                      },
-                      cache: true
-                      }
-                    });
-
- $('#school_id').on('select2:select', function(e) {
-    $('#class_id').empty();
-    $('#class_id').select2('trigger', 'query', {});
- });
 
                 $("#datatable").DataTable({
                   language: {
@@ -232,31 +174,23 @@ $('#class_id').select2({
   });
   $('#editform').validate({
     rules: {
-      firstName: {
+      userName: {
         required: true,
+        minlength: 5
       },
-      lastName: {
+      password: {
         required: true,
-      },
-      school_id: {
-        required: true
-      },
-      class_id: {
-        required: true
+        minlength: 5
       },
     },
     messages: {
-      firstName: {
-        required: "Введіть ім'я студента",
+      userName: {
+        required: "Введіть ім'я користувача",
+        minlength: "Мінімальна довжина назви 5 символів"
       },
-      lastName: {
-        required: "Введіть прізвище студента",
-      },
-      school_id: {
-        required: "Оберіть школу"
-      },
-      class_id: {
-        required: "Оберіть клас"
+      password: {
+        required: "Введіть пароль",
+        minlength: "Мінімальна довжина пароля 5 символів"
       },
     },
     errorElement: 'span',
