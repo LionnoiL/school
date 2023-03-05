@@ -43,7 +43,7 @@ dependencies {
 	// https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-api
 	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
 
-
+	implementation 'javax.cache:cache-api'
 
 
 }
